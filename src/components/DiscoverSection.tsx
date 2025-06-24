@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Calendar, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const DiscoverSection = () => {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -144,12 +145,14 @@ const DiscoverSection = () => {
                       <Calendar className="w-4 h-4 mr-1" />
                       {pkg.duration}
                     </div>
-                    <Button 
-                      size="sm" 
-                      className="bg-[#A6CE38] hover:bg-[#95b632] text-white"
-                    >
-                      Learn More
-                    </Button>
+                    <Link to={`/package/${pkg.id}`}>
+                      <Button 
+                        size="sm" 
+                        className="bg-[#A6CE38] hover:bg-[#95b632] text-white"
+                      >
+                        Learn More
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </CardContent>

@@ -1,8 +1,9 @@
+
 import { useParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, Users, Clock, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, MapPin, Users, Clock, Star, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
 import { useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -179,6 +180,11 @@ const PackageDetails = () => {
     setCurrentImageIndex((prev) => (prev - 1 + currentPackage.images.length) % currentPackage.images.length);
   };
 
+  const handleWhatsAppContact = () => {
+    // This will be linked to actual WhatsApp number later
+    window.open('https://wa.me/1234567890', '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -271,8 +277,12 @@ const PackageDetails = () => {
                   </div>
                 </div>
 
-                <Button className="w-full md:w-auto bg-[#A6CE38] hover:bg-[#95b632] text-white px-8 py-3">
-                  Reserve Your Spot
+                <Button 
+                  onClick={handleWhatsAppContact}
+                  className="w-full md:w-auto bg-[#A6CE38] hover:bg-[#95b632] text-white px-8 py-3"
+                >
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Talk to One of Our Agents
                 </Button>
               </CardContent>
             </Card>
@@ -317,7 +327,7 @@ const PackageDetails = () => {
             <Card>
               <CardContent className="p-6">
                 <h3 className="text-xl font-bold mb-4 text-green-700">What's Included</h3>
-                <ul className="space-y-2">
+                <ul className="space-y-2 mb-6">
                   {currentPackage.inclusions.map((item, index) => (
                     <li key={index} className="flex items-start text-sm">
                       <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 mr-2 flex-shrink-0" />
@@ -325,21 +335,14 @@ const PackageDetails = () => {
                     </li>
                   ))}
                 </ul>
-              </CardContent>
-            </Card>
-
-            {/* Exclusions */}
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4 text-red-700">Not Included</h3>
-                <ul className="space-y-2">
-                  {currentPackage.exclusions.map((item, index) => (
-                    <li key={index} className="flex items-start text-sm">
-                      <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                
+                <Button 
+                  onClick={handleWhatsAppContact}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                >
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Contact via WhatsApp
+                </Button>
               </CardContent>
             </Card>
 
@@ -350,7 +353,11 @@ const PackageDetails = () => {
                 <p className="mb-4 text-sm opacity-90">
                   Our travel concierges are ready to help customize this experience for you.
                 </p>
-                <Button variant="secondary" className="w-full bg-white text-[#A6CE38] hover:bg-gray-100">
+                <Button 
+                  onClick={handleWhatsAppContact}
+                  variant="secondary" 
+                  className="w-full bg-white text-[#A6CE38] hover:bg-gray-100"
+                >
                   Contact Us
                 </Button>
               </CardContent>

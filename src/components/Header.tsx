@@ -7,6 +7,10 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const handleWhatsAppContact = () => {
+    window.open('https://wa.me/1234567890', '_blank');
+  };
+
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
       {/* Top bar */}
@@ -19,7 +23,7 @@ const Header = () => {
             </div>
             <div className="flex items-center space-x-2">
               <Mail size={14} />
-              <span>info@luxureadventures.com</span>
+              <span>info@trevecom.com</span>
             </div>
           </div>
           <div className="hidden md:block">
@@ -31,8 +35,12 @@ const Header = () => {
       {/* Main navigation */}
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <Link to="/" className="text-2xl font-bold text-gray-900">
-            LuxureAdventures
+          <Link to="/" className="flex items-center">
+            <img 
+              src="/lovable-uploads/96c4d968-6887-4b3f-9f9b-e392e0f0c84e.png" 
+              alt="Trevecom" 
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -52,7 +60,10 @@ const Header = () => {
             <Link to="/contact" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
               Contact
             </Link>
-            <Button className="bg-[#A6CE38] hover:bg-[#95b632] text-white">
+            <Button 
+              onClick={handleWhatsAppContact}
+              className="bg-[#A6CE38] hover:bg-[#95b632] text-white"
+            >
               Book Now
             </Button>
           </div>
@@ -85,7 +96,10 @@ const Header = () => {
               <Link to="/contact" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
                 Contact
               </Link>
-              <Button className="bg-[#A6CE38] hover:bg-[#95b632] text-white w-fit">
+              <Button 
+                onClick={handleWhatsAppContact}
+                className="bg-[#A6CE38] hover:bg-[#95b632] text-white w-fit"
+              >
                 Book Now
               </Button>
             </div>

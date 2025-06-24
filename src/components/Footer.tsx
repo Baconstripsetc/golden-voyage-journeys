@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-[#A6CE38]">LuxureAdventures</h3>
+            <h3 className="text-2xl font-bold text-[#A6CE38]">Trevecom</h3>
             <p className="text-gray-300">
               Crafting extraordinary travel experiences for the sophisticated adventurer. 
               Where luxury meets discovery.
@@ -61,7 +61,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="w-4 h-4 text-[#A6CE38]" />
-                <span className="text-gray-300">info@luxureadventures.com</span>
+                <span className="text-gray-300">info@trevecom.com</span>
               </div>
               <div className="flex items-start space-x-2">
                 <MapPin className="w-4 h-4 text-[#A6CE38] mt-1" />
@@ -75,7 +75,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 LuxureAdventures. All rights reserved. | Privacy Policy | Terms of Service</p>
+          <p>&copy; 2024 Trevecom. All rights reserved. | Privacy Policy | Terms of Service</p>
         </div>
       </div>
     </footer>

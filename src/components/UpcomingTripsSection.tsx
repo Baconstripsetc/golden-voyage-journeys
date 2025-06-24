@@ -1,8 +1,7 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, Users, Plane } from "lucide-react";
+import { Calendar, MapPin, Users, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const UpcomingTripsSection = () => {
@@ -44,6 +43,11 @@ const UpcomingTripsSection = () => {
       description: "Journey through ancient souks and palaces in Marrakech, Fez, and Casablanca"
     }
   ];
+
+  const handleWhatsAppContact = () => {
+    // This will be linked to actual WhatsApp number later
+    window.open('https://wa.me/1234567890', '_blank');
+  };
 
   return (
     <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
@@ -114,10 +118,11 @@ const UpcomingTripsSection = () => {
                   
                   <div className="pt-4 space-y-3">
                     <Button 
+                      onClick={handleWhatsAppContact}
                       className="w-full bg-[#A6CE38] hover:bg-[#95b632] text-white font-semibold py-3"
                     >
-                      <Plane className="w-4 h-4 mr-2" />
-                      Reserve Your Spot
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      Talk to One of Our Agents
                     </Button>
                     <Link to={`/package/${trip.id}`}>
                       <Button 
@@ -144,6 +149,7 @@ const UpcomingTripsSection = () => {
               Our travel concierges can create a completely customized itinerary just for you.
             </p>
             <Button 
+              onClick={handleWhatsAppContact}
               size="lg" 
               className="bg-[#A6CE38] hover:bg-[#95b632] text-white px-8 py-4 text-lg font-semibold rounded-full"
             >
