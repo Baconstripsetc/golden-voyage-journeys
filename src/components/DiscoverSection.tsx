@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, Users } from "lucide-react";
+import { MapPin, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const DiscoverSection = () => {
@@ -86,30 +86,31 @@ const DiscoverSection = () => {
     : packages.filter(pkg => pkg.category.includes(activeFilter));
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-12 md:py-20 bg-white">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
             Discover
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             Curated experiences designed for the sophisticated traveler seeking authentic adventures
           </p>
         </div>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-8 md:mb-12 px-2">
           {filters.map((filter) => (
             <Button
               key={filter}
               variant={activeFilter === filter ? "default" : "outline"}
               onClick={() => setActiveFilter(filter)}
-              className={`rounded-full px-6 py-2 transition-all ${
+              className={`rounded-full px-3 sm:px-4 md:px-6 py-2 text-xs sm:text-sm transition-all ${
                 activeFilter === filter
                   ? "bg-[#A6CE38] hover:bg-[#95b632] text-white"
                   : "border-[#A6CE38] text-[#A6CE38] hover:bg-[#A6CE38] hover:text-white"
               }`}
+              size="sm"
             >
               {filter}
             </Button>
@@ -117,38 +118,38 @@ const DiscoverSection = () => {
         </div>
 
         {/* Package Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {filteredPackages.map((pkg) => (
             <Card key={pkg.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden">
                 <img 
                   src={pkg.image} 
                   alt={pkg.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute top-4 right-4">
-                  <Badge className="bg-[#A6CE38] text-white">
+                <div className="absolute top-3 md:top-4 right-3 md:right-4">
+                  <Badge className="bg-[#A6CE38] text-white text-xs md:text-sm">
                     {pkg.price}
                   </Badge>
                 </div>
               </div>
-              <CardContent className="p-6">
+              <CardContent className="p-4 md:p-6">
                 <div className="space-y-3">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <MapPin className="w-4 h-4 mr-1" />
+                  <div className="flex items-center text-xs md:text-sm text-gray-500">
+                    <MapPin className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                     {pkg.location}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">{pkg.title}</h3>
-                  <p className="text-gray-600">{pkg.description}</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Calendar className="w-4 h-4 mr-1" />
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 leading-tight">{pkg.title}</h3>
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">{pkg.description}</p>
+                  <div className="flex items-center justify-between pt-2">
+                    <div className="flex items-center text-xs md:text-sm text-gray-500">
+                      <Calendar className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                       {pkg.duration}
                     </div>
                     <Link to={`/package/${pkg.id}`}>
                       <Button 
                         size="sm" 
-                        className="bg-[#A6CE38] hover:bg-[#95b632] text-white"
+                        className="bg-[#A6CE38] hover:bg-[#95b632] text-white px-3 md:px-4 py-2 text-xs md:text-sm"
                       >
                         Learn More
                       </Button>
@@ -161,11 +162,11 @@ const DiscoverSection = () => {
         </div>
 
         {/* Call to Action */}
-        <div className="text-center mt-16">
+        <div className="text-center mt-12 md:mt-16">
           <Button 
             size="lg" 
             variant="outline"
-            className="border-2 border-[#A6CE38] text-[#A6CE38] hover:bg-[#A6CE38] hover:text-white px-8 py-4 text-lg font-semibold rounded-full"
+            className="border-2 border-[#A6CE38] text-[#A6CE38] hover:bg-[#A6CE38] hover:text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold rounded-full"
           >
             View All Packages
           </Button>

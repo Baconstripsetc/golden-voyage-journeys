@@ -14,42 +14,42 @@ const HeroSection = () => {
       />
       
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <div className="max-w-4xl mx-auto space-y-8 fade-in">
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
+        <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 fade-in">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 leading-tight">
             That's <span className="text-[#A6CE38]">75 years</span><br />
             of <span className="text-[#A6CE38]">L'Esprit Libre</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
             In 1950, we were the pioneers of sophisticated travel, creating unforgettable experiences 
             for the discerning adventurer. Today, we continue to craft journeys that blend luxury 
             with authentic discovery, designed specifically for those who appreciate the finer things in life.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 md:pt-6 px-4">
             <Button 
               size="lg" 
-              className="bg-[#A6CE38] hover:bg-[#95b632] text-white px-8 py-4 text-lg font-semibold rounded-full"
+              className="bg-[#A6CE38] hover:bg-[#95b632] text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto"
             >
               Discover Your Next Adventure
-              <ArrowRight className="ml-2 w-5 h-5" />
+              <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
             
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-2 border-[#A6CE38] text-[#A6CE38] hover:bg-[#A6CE38] hover:text-white px-8 py-4 text-lg font-semibold rounded-full"
+              className="border-2 border-[#A6CE38] text-[#A6CE38] hover:bg-[#A6CE38] hover:text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto"
             >
               View Upcoming Trips
             </Button>
           </div>
           
-          <div className="pt-12">
-            <p className="text-sm text-gray-500 mb-4">As seen in premium travel</p>
-            <div className="flex justify-center items-center space-x-8 opacity-60">
-              <div className="text-lg font-bold text-gray-600">Travel + Leisure</div>
-              <div className="text-lg font-bold text-gray-600">Condé Nast</div>
-              <div className="text-lg font-bold text-gray-600">National Geographic</div>
+          <div className="pt-8 md:pt-12">
+            <p className="text-xs sm:text-sm text-gray-500 mb-4">As seen in premium travel</p>
+            <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-8 opacity-60">
+              <div className="text-sm sm:text-lg font-bold text-gray-600">Travel + Leisure</div>
+              <div className="text-sm sm:text-lg font-bold text-gray-600">Condé Nast</div>
+              <div className="text-sm sm:text-lg font-bold text-gray-600">National Geographic</div>
             </div>
           </div>
         </div>

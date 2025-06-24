@@ -1,4 +1,3 @@
-
 import { useParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -156,8 +155,8 @@ const PackageDetails = () => {
     }
   } as const;
 
-  const packageId = parseInt(id || '1', 10) as keyof typeof packageData;
-  const currentPackage = packageData[packageId];
+  const packageIdNumber = parseInt(id || '1', 10);
+  const currentPackage = packageData[packageIdNumber as keyof typeof packageData];
 
   if (!currentPackage) {
     return (
@@ -181,7 +180,6 @@ const PackageDetails = () => {
   };
 
   const handleWhatsAppContact = () => {
-    // This will be linked to actual WhatsApp number later
     window.open('https://wa.me/1234567890', '_blank');
   };
 
@@ -189,10 +187,10 @@ const PackageDetails = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6 md:py-8">
         {/* Hero Section with Image Slider */}
-        <div className="relative mb-8 rounded-2xl overflow-hidden">
-          <div className="relative h-64 md:h-96 lg:h-[500px]">
+        <div className="relative mb-6 md:mb-8 rounded-xl md:rounded-2xl overflow-hidden">
+          <div className="relative h-48 sm:h-64 md:h-96 lg:h-[500px]">
             <img 
               src={currentPackage.images[currentImageIndex]} 
               alt={currentPackage.title}
@@ -203,19 +201,19 @@ const PackageDetails = () => {
             {/* Navigation Arrows */}
             <button 
               onClick={prevImage}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all"
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all"
             >
-              <ChevronLeft className="w-6 h-6 text-white" />
+              <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 text-white" />
             </button>
             <button 
               onClick={nextImage}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all"
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all"
             >
-              <ChevronRight className="w-6 h-6 text-white" />
+              <ChevronRight className="w-4 h-4 md:w-6 md:h-6 text-white" />
             </button>
 
             {/* Image Indicators */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+            <div className="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
               {currentPackage.images.map((_, index) => (
                 <button
                   key={index}
@@ -228,58 +226,58 @@ const PackageDetails = () => {
             </div>
 
             {/* Title Overlay */}
-            <div className="absolute bottom-8 left-8 right-8">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
+            <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8 right-4 md:right-8">
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-2">
                 {currentPackage.title}
               </h1>
-              <div className="flex items-center text-white/90 text-lg">
-                <MapPin className="w-5 h-5 mr-2" />
+              <div className="flex items-center text-white/90 text-sm md:text-lg">
+                <MapPin className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 {currentPackage.location}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6 md:space-y-8">
             {/* Overview */}
             <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
+              <CardContent className="p-4 md:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0">
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center">
-                      <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                      <span className="ml-1 font-semibold">{currentPackage.rating}</span>
-                      <span className="text-gray-500 ml-1">({currentPackage.reviewCount} reviews)</span>
+                      <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
+                      <span className="ml-1 font-semibold text-sm md:text-base">{currentPackage.rating}</span>
+                      <span className="text-gray-500 ml-1 text-sm">({currentPackage.reviewCount} reviews)</span>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold text-[#A6CE38]">{currentPackage.price}</div>
-                    <div className="text-gray-500">per person</div>
+                  <div className="text-left sm:text-right">
+                    <div className="text-2xl md:text-3xl font-bold text-[#A6CE38]">{currentPackage.price}</div>
+                    <div className="text-gray-500 text-sm">per person</div>
                   </div>
                 </div>
-                <p className="text-gray-700 leading-relaxed mb-6">{currentPackage.description}</p>
+                <p className="text-gray-700 leading-relaxed mb-6 text-sm md:text-base">{currentPackage.description}</p>
                 
                 {/* Quick Info */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-                  <div className="flex items-center text-gray-600">
-                    <Clock className="w-5 h-5 mr-2" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                  <div className="flex items-center text-gray-600 text-sm">
+                    <Clock className="w-4 h-4 mr-2" />
                     <span>{currentPackage.duration}</span>
                   </div>
-                  <div className="flex items-center text-gray-600">
-                    <Users className="w-5 h-5 mr-2" />
+                  <div className="flex items-center text-gray-600 text-sm">
+                    <Users className="w-4 h-4 mr-2" />
                     <span>Max 12 guests</span>
                   </div>
-                  <div className="flex items-center text-gray-600">
-                    <Calendar className="w-5 h-5 mr-2" />
+                  <div className="flex items-center text-gray-600 text-sm">
+                    <Calendar className="w-4 h-4 mr-2" />
                     <span>Multiple dates</span>
                   </div>
                 </div>
 
                 <Button 
                   onClick={handleWhatsAppContact}
-                  className="w-full md:w-auto bg-[#A6CE38] hover:bg-[#95b632] text-white px-8 py-3"
+                  className="w-full bg-[#A6CE38] hover:bg-[#95b632] text-white px-6 py-3 text-sm md:text-base"
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Talk to One of Our Agents
@@ -289,13 +287,13 @@ const PackageDetails = () => {
 
             {/* Highlights */}
             <Card>
-              <CardContent className="p-6">
-                <h2 className="text-2xl font-bold mb-4">Trip Highlights</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <CardContent className="p-4 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold mb-4">Trip Highlights</h2>
+                <div className="grid grid-cols-1 gap-3">
                   {currentPackage.highlights.map((highlight, index) => (
                     <div key={index} className="flex items-start">
                       <div className="w-2 h-2 bg-[#A6CE38] rounded-full mt-2 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700">{highlight}</span>
+                      <span className="text-gray-700 text-sm md:text-base">{highlight}</span>
                     </div>
                   ))}
                 </div>
@@ -304,16 +302,16 @@ const PackageDetails = () => {
 
             {/* Itinerary */}
             <Card>
-              <CardContent className="p-6">
-                <h2 className="text-2xl font-bold mb-6">Itinerary Overview</h2>
+              <CardContent className="p-4 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold mb-6">Itinerary Overview</h2>
                 <div className="space-y-4">
                   {currentPackage.itinerary.map((item, index) => (
                     <div key={index} className="border-l-2 border-[#A6CE38] pl-4 pb-4">
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-                        <h3 className="font-semibold text-lg">{item.day}</h3>
+                      <div className="flex flex-col space-y-2 mb-2">
+                        <h3 className="font-semibold text-base md:text-lg">{item.day}</h3>
                         <Badge variant="outline" className="text-xs w-fit">{item.accommodation}</Badge>
                       </div>
-                      <p className="text-gray-600">{item.activity}</p>
+                      <p className="text-gray-600 text-sm md:text-base">{item.activity}</p>
                     </div>
                   ))}
                 </div>
@@ -325,8 +323,8 @@ const PackageDetails = () => {
           <div className="space-y-6">
             {/* Inclusions */}
             <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4 text-green-700">What's Included</h3>
+              <CardContent className="p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-bold mb-4 text-green-700">What's Included</h3>
                 <ul className="space-y-2 mb-6">
                   {currentPackage.inclusions.map((item, index) => (
                     <li key={index} className="flex items-start text-sm">
@@ -338,7 +336,7 @@ const PackageDetails = () => {
                 
                 <Button 
                   onClick={handleWhatsAppContact}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-sm md:text-base"
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Contact via WhatsApp
@@ -348,15 +346,15 @@ const PackageDetails = () => {
 
             {/* Contact Card */}
             <Card className="bg-[#A6CE38] text-white">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4">Need More Information?</h3>
+              <CardContent className="p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-bold mb-4">Need More Information?</h3>
                 <p className="mb-4 text-sm opacity-90">
                   Our travel concierges are ready to help customize this experience for you.
                 </p>
                 <Button 
                   onClick={handleWhatsAppContact}
                   variant="secondary" 
-                  className="w-full bg-white text-[#A6CE38] hover:bg-gray-100"
+                  className="w-full bg-white text-[#A6CE38] hover:bg-gray-100 py-3 text-sm md:text-base"
                 >
                   Contact Us
                 </Button>
