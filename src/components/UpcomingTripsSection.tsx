@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Users, Plane } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const UpcomingTripsSection = () => {
   const upcomingTrips = [
@@ -118,12 +119,14 @@ const UpcomingTripsSection = () => {
                       <Plane className="w-4 h-4 mr-2" />
                       Reserve Your Spot
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      className="w-full border-[#A6CE38] text-[#A6CE38] hover:bg-[#A6CE38] hover:text-white"
-                    >
-                      View Full Itinerary
-                    </Button>
+                    <Link to={`/package/${trip.id}`}>
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-[#A6CE38] text-[#A6CE38] hover:bg-[#A6CE38] hover:text-white"
+                      >
+                        View Full Itinerary
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </CardContent>
