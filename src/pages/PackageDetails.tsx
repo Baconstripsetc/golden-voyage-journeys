@@ -1,4 +1,3 @@
-
 import { useParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -154,12 +153,22 @@ const PackageDetails = () => {
         "Spa treatments (except included hammam)"
       ]
     }
-  };
+  } as const;
 
-  const currentPackage = packageData[id as keyof typeof packageData];
+  const packageId = parseInt(id || '1', 10) as keyof typeof packageData;
+  const currentPackage = packageData[packageId];
 
   if (!currentPackage) {
-    return <div>Package not found</div>;
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Package not found</h1>
+          <p className="text-gray-600">The package you're looking for doesn't exist.</p>
+        </div>
+        <Footer />
+      </div>
+    );
   }
 
   const nextImage = () => {
