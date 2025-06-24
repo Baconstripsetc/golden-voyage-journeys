@@ -1,8 +1,32 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const HeroSection = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  // Brand logos - placeholder URLs that will be replaced with actual logos later
+  const brandLogos = [
+    { name: "Nike", url: "https://logos-world.net/wp-content/uploads/2020/04/Nike-Logo.png" },
+    { name: "Apple", url: "https://logos-world.net/wp-content/uploads/2020/04/Apple-Logo.png" },
+    { name: "Adidas", url: "https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png" },
+    { name: "Samsung", url: "https://logos-world.net/wp-content/uploads/2020/06/Samsung-Logo.png" },
+    { name: "Google", url: "https://logos-world.net/wp-content/uploads/2020/09/Google-Logo.png" },
+    { name: "Microsoft", url: "https://logos-world.net/wp-content/uploads/2020/09/Microsoft-Logo.png" },
+    { name: "Amazon", url: "https://logos-world.net/wp-content/uploads/2020/04/Amazon-Logo.png" },
+    { name: "Coca Cola", url: "https://logos-world.net/wp-content/uploads/2020/04/Coca-Cola-Logo.png" }
+  ];
+
+  // Auto-slide effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % brandLogos.length);
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [brandLogos.length]);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
       {/* Background image overlay */}
@@ -45,11 +69,40 @@ const HeroSection = () => {
           </div>
           
           <div className="pt-8 md:pt-12">
-            <p className="text-xs sm:text-sm text-gray-500 mb-4">As seen in premium travel</p>
-            <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-8 opacity-60">
-              <div className="text-sm sm:text-lg font-bold text-gray-600">Travel + Leisure</div>
-              <div className="text-sm sm:text-lg font-bold text-gray-600">Condé Nast</div>
-              <div className="text-sm sm:text-lg font-bold text-gray-600">National Geographic</div>
+            <p className="text-xs sm:text-sm text-gray-500 mb-6">Trusted by premium brands worldwide</p>
+            
+            {/* Brand logos carousel */}
+            <div className="relative overflow-hidden max-w-4xl mx-auto">
+              <div 
+                className="flex transition-transform duration-1000 ease-in-out"
+                style={{
+                  transform: `translateX(-${currentIndex * (100 / 4)}%)`,
+                  width: `${brandLogos.length * 25}%`
+                }}
+              >
+                {brandLogos.map((brand, index) => (
+                  <div 
+                    key={index}
+                    className="w-1/4 flex-shrink-0 px-2 sm:px-4 flex items-center justify-center"
+                    style={{ width: `${100 / brandLogos.length}%` }}
+                  >
+                    <img
+                      src={brand.url}
+                      alt={brand.name}
+                      className="h-8 sm:h-10 md:h-12 w-auto object-contain opacity-60 hover:opacity-80 transition-opacity duration-300 filter grayscale hover:grayscale-0"
+                      onError={(e) => {
+                        // Fallback to text if image fails to load
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const textFallback = document.createElement('div');
+                        textFallback.textContent = brand.name;
+                        textFallback.className = 'text-sm sm:text-lg font-bold text-gray-600 opacity-60';
+                        target.parentNode?.appendChild(textFallback);
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
