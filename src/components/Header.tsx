@@ -1,0 +1,99 @@
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Menu, X, Phone, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <header className="w-full bg-white shadow-sm sticky top-0 z-50">
+      {/* Top bar */}
+      <div className="bg-[#A6CE38] text-white py-2">
+        <div className="container mx-auto px-4 flex justify-between items-center text-sm">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <Phone size={14} />
+              <span>+1 (555) 123-4567</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Mail size={14} />
+              <span>info@luxureadventures.com</span>
+            </div>
+          </div>
+          <div className="hidden md:block">
+            <span>Curated luxury adventures for the discerning traveler</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main navigation */}
+      <nav className="container mx-auto px-4 py-4">
+        <div className="flex justify-between items-center">
+          <Link to="/" className="text-2xl font-bold text-gray-900">
+            LuxureAdventures
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
+              Home
+            </Link>
+            <Link to="/discover" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
+              Discover
+            </Link>
+            <Link to="/upcoming-trips" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
+              Upcoming Trips
+            </Link>
+            <Link to="/about" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
+              About Us
+            </Link>
+            <Link to="/contact" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
+              Contact
+            </Link>
+            <Button className="bg-[#A6CE38] hover:bg-[#95b632] text-white">
+              Book Now
+            </Button>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden text-gray-700"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 border-t">
+            <div className="flex flex-col space-y-4 pt-4">
+              <Link to="/" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
+                Home
+              </Link>
+              <Link to="/discover" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
+                Discover
+              </Link>
+              <Link to="/upcoming-trips" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
+                Upcoming Trips
+              </Link>
+              <Link to="/about" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
+                About Us
+              </Link>
+              <Link to="/contact" className="text-gray-700 hover:text-[#A6CE38] transition-colors">
+                Contact
+              </Link>
+              <Button className="bg-[#A6CE38] hover:bg-[#95b632] text-white w-fit">
+                Book Now
+              </Button>
+            </div>
+          </div>
+        )}
+      </nav>
+    </header>
+  );
+};
+
+export default Header;
