@@ -1,16 +1,16 @@
 
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Settings, Package, Plus, LogOut } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { useAuth } from '@/hooks/useAuth';
 
 const AdminSidebar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
+  const { logout } = useAuth();
   
   const handleLogout = () => {
-    localStorage.removeItem('adminLoggedIn');
-    navigate('/admin');
+    logout();
   };
 
   const menuItems = [
@@ -24,7 +24,7 @@ const AdminSidebar = () => {
       title: 'Add New Package',
       icon: Plus,
       path: '/admin/new-package',
-      active: location.pathname === '/admin/new-package'
+      active: location.pathname === '/admin/new-package' || location.pathname.includes('/admin/edit-package')
     },
     {
       title: 'Settings',

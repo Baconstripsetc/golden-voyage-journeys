@@ -9,7 +9,93 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      admin_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          password_hash: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          password_hash: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          password_hash?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      travel_packages: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration: string | null
+          exclusions: Json | null
+          highlights: Json | null
+          id: string
+          images: Json | null
+          inclusions: Json | null
+          itinerary: Json | null
+          location: string | null
+          price: string
+          rating: number | null
+          review_count: number | null
+          slug: string
+          status: string
+          title: string
+          travel_period: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          exclusions?: Json | null
+          highlights?: Json | null
+          id?: string
+          images?: Json | null
+          inclusions?: Json | null
+          itinerary?: Json | null
+          location?: string | null
+          price: string
+          rating?: number | null
+          review_count?: number | null
+          slug: string
+          status?: string
+          title: string
+          travel_period?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          exclusions?: Json | null
+          highlights?: Json | null
+          id?: string
+          images?: Json | null
+          inclusions?: Json | null
+          itinerary?: Json | null
+          location?: string | null
+          price?: string
+          rating?: number | null
+          review_count?: number | null
+          slug?: string
+          status?: string
+          title?: string
+          travel_period?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

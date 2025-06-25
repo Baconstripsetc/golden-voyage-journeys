@@ -6,71 +6,58 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, Edit, Trash2, Plus } from 'lucide-react';
-
-// Mock data for packages (in real app, this would come from backend)
-const mockPackages = [
-  {
-    id: 1,
-    title: 'Luxury Safari Adventure',
-    slug: 'luxury-safari-adventure',
-    price: 'R45,999 PPS',
-    status: 'Published',
-    image: '/placeholder.svg'
-  },
-  {
-    id: 2,
-    title: 'Cape Town City Break',
-    slug: 'cape-town-city-break',
-    price: 'R12,500 PPS',
-    status: 'Draft',
-    image: '/placeholder.svg'
-  },
-  {
-    id: 3,
-    title: 'Coastal Escape Package',
-    slug: 'coastal-escape-package',
-    price: 'R8,999 PPS',
-    status: 'Published',
-    image: '/placeholder.svg'
-  },
-  {
-    id: 4,
-    title: 'Mountain Retreat Adventure',
-    slug: 'mountain-retreat-adventure',
-    price: 'R15,999 PPS',
-    status: 'Published',
-    image: '/placeholder.svg'
-  }
-];
+import { Search, Edit, Trash2, Plus, Eye } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { usePackages, TravelPackage } from '@/hooks/usePackages';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [packages, setPackages] = useState(mockPackages);
+  const { isAuthenticated } = useAuth();
+  const { packages, loading, deletePackage, publishPackage, unpublishPackage } = usePackages();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('All');
 
   useEffect(() => {
-    // Check if admin is logged in
-    if (!localStorage.getItem('adminLoggedIn')) {
+    if (!isAuthenticated) {
       navigate('/admin');
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
   const filteredPackages = packages.filter(pkg => {
     const matchesSearch = pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          pkg.slug.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesTab = activeTab === 'All' || pkg.status === activeTab;
+    const matchesTab = activeTab === 'All' || 
+                      (activeTab === 'Published' && pkg.status === 'published') ||
+                      (activeTab === 'Draft' && pkg.status === 'draft');
     return matchesSearch && matchesTab;
   });
 
-  const handleDelete = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this package?')) {
-      setPackages(packages.filter(pkg => pkg.id !== id));
+  const handleDelete = async (id: string, title: string) => {
+    if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
+      await deletePackage(id);
+    }
+  };
+
+  const handleToggleStatus = async (pkg: TravelPackage) => {
+    if (pkg.status === 'published') {
+      await unpublishPackage(pkg.id);
+    } else {
+      await publishPackage(pkg.id);
     }
   };
 
   const tabs = ['All', 'Published', 'Draft'];
+
+  if (loading) {
+    return (
+      <div className="flex h-screen bg-gray-50">
+        <AdminSidebar />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-lg">Loading packages...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -124,30 +111,42 @@ const AdminDashboard = () => {
             {filteredPackages.map((pkg) => (
               <Card key={pkg.id} className="overflow-hidden">
                 <div className="aspect-video bg-gray-200 relative">
-                  <img 
-                    src={pkg.image} 
-                    alt={pkg.title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const parent = target.parentElement;
-                      if (parent) {
-                        parent.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400"><svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg></div>';
-                      }
-                    }}
-                  />
+                  {pkg.images && pkg.images.length > 0 ? (
+                    <img 
+                      src={pkg.images[0]} 
+                      alt={pkg.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400"><svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg></div>';
+                        }
+                      }}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-400">
+                      <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"></path>
+                      </svg>
+                    </div>
+                  )}
                 </div>
                 <CardContent className="p-4">
                   <div className="mb-2">
                     <h3 className="font-semibold text-lg text-gray-900">{pkg.title}</h3>
                     <p className="text-sm text-gray-500">/{pkg.slug}</p>
+                    {pkg.location && <p className="text-sm text-gray-600">{pkg.location}</p>}
                   </div>
                   
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-lg font-bold text-blue-600">{pkg.price}</span>
-                    <Badge variant={pkg.status === 'Published' ? 'default' : 'secondary'}>
-                      {pkg.status}
+                    <Badge 
+                      variant={pkg.status === 'published' ? 'default' : 'secondary'}
+                      className={pkg.status === 'published' ? 'bg-green-100 text-green-800' : ''}
+                    >
+                      {pkg.status === 'published' ? 'Published' : 'Draft'}
                     </Badge>
                   </div>
 
@@ -155,16 +154,31 @@ const AdminDashboard = () => {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      onClick={() => navigate(`/admin/edit-package/${pkg.id}`)}
+                      onClick={() => navigate(`/package/${pkg.id}`)}
                       className="flex-1"
                     >
-                      <Edit className="w-4 h-4 mr-1" />
-                      Edit
+                      <Eye className="w-4 h-4 mr-1" />
+                      View
                     </Button>
                     <Button 
                       variant="outline" 
                       size="sm"
-                      onClick={() => handleDelete(pkg.id)}
+                      onClick={() => navigate(`/admin/edit-package/${pkg.id}`)}
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleToggleStatus(pkg)}
+                      className={pkg.status === 'published' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}
+                    >
+                      {pkg.status === 'published' ? 'Unpublish' : 'Publish'}
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleDelete(pkg.id, pkg.title)}
                       className="text-red-600 hover:text-red-700 hover:bg-red-50"
                     >
                       <Trash2 className="w-4 h-4" />

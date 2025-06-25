@@ -6,27 +6,35 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/components/ui/use-toast';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login, loading } = useAuth();
+  const { toast } = useToast();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // Simple authentication check (in real app, this would be handled by backend)
-    if (email === 'admin@trevecom.com' && password === 'admin123') {
-      localStorage.setItem('adminLoggedIn', 'true');
+    const result = await login(email, password);
+    
+    if (result.success) {
+      toast({
+        title: "Success",
+        description: "Successfully logged in!",
+      });
       navigate('/admin/dashboard');
     } else {
-      alert('Invalid credentials. Use admin@trevecom.com / admin123');
+      toast({
+        title: "Error",
+        description: result.error || "Login failed",
+        variant: "destructive",
+      });
     }
-    
-    setIsLoading(false);
   };
 
   return (
@@ -43,7 +51,7 @@ const AdminLogin = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@trevecom.com"
+                placeholder="Eric.trevecom@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -76,9 +84,9 @@ const AdminLogin = () => {
             <Button 
               type="submit" 
               className="w-full bg-blue-600 hover:bg-blue-700"
-              disabled={isLoading}
+              disabled={loading}
             >
-              {isLoading ? 'Signing In...' : 'Sign In'}
+              {loading ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
         </CardContent>
