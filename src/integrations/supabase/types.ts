@@ -164,7 +164,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_unique_slug: {
+        Args: { title_text: string; table_name: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

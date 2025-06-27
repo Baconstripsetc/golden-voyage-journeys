@@ -35,6 +35,7 @@ export const useDiscoveryPackages = () => {
 
   const fetchPackages = async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('discovery_packages')
         .select('*')
@@ -50,7 +51,6 @@ export const useDiscoveryPackages = () => {
         return;
       }
 
-      // Transform the data to match our DiscoveryPackage interface
       const transformedPackages: DiscoveryPackage[] = (data || []).map(pkg => ({
         ...pkg,
         status: pkg.status as 'draft' | 'published',
@@ -78,11 +78,65 @@ export const useDiscoveryPackages = () => {
     }
   };
 
-  const createPackage = async (packageData: Omit<DiscoveryPackage, 'id' | 'created_at' | 'updated_at'>) => {
+  const getPackageById = async (id: string): Promise<DiscoveryPackage | null> => {
     try {
       const { data, error } = await supabase
         .from('discovery_packages')
-        .insert([packageData])
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching discovery package:', error);
+        return null;
+      }
+
+      return {
+        ...data,
+        status: data.status as 'draft' | 'published',
+        images: Array.isArray(data.images) ? data.images as string[] : [],
+        highlights: Array.isArray(data.highlights) ? data.highlights as string[] : [],
+        inclusions: Array.isArray(data.inclusions) ? data.inclusions as string[] : [],
+        exclusions: Array.isArray(data.exclusions) ? data.exclusions as string[] : [],
+        itinerary: Array.isArray(data.itinerary) ? data.itinerary as Array<{
+          day: string;
+          activity: string;
+          accommodation: string;
+        }> : [],
+      };
+    } catch (err) {
+      console.error('Error:', err);
+      return null;
+    }
+  };
+
+  const createPackage = async (packageData: Omit<DiscoveryPackage, 'id' | 'created_at' | 'updated_at'>): Promise<DiscoveryPackage | null> => {
+    try {
+      // Generate unique slug
+      const { data: slugData, error: slugError } = await supabase
+        .rpc('generate_unique_slug', { 
+          title_text: packageData.title, 
+          table_name: 'discovery_packages' 
+        });
+
+      if (slugError) {
+        console.error('Error generating slug:', slugError);
+        toast({
+          title: "Error",
+          description: "Failed to generate unique slug",
+          variant: "destructive",
+        });
+        return null;
+      }
+
+      const finalPackageData = {
+        ...packageData,
+        slug: slugData || packageData.slug,
+      };
+
+      const { data, error } = await supabase
+        .from('discovery_packages')
+        .insert([finalPackageData])
         .select()
         .single();
 
@@ -101,7 +155,7 @@ export const useDiscoveryPackages = () => {
         description: "Discovery package created successfully",
       });
 
-      await fetchPackages(); // Refresh the list
+      await fetchPackages();
       return data;
     } catch (err) {
       console.error('Error:', err);
@@ -114,7 +168,7 @@ export const useDiscoveryPackages = () => {
     }
   };
 
-  const updatePackage = async (id: string, packageData: Partial<DiscoveryPackage>) => {
+  const updatePackage = async (id: string, packageData: Partial<DiscoveryPackage>): Promise<DiscoveryPackage | null> => {
     try {
       const { data, error } = await supabase
         .from('discovery_packages')
@@ -138,7 +192,7 @@ export const useDiscoveryPackages = () => {
         description: "Discovery package updated successfully",
       });
 
-      await fetchPackages(); // Refresh the list
+      await fetchPackages();
       return data;
     } catch (err) {
       console.error('Error:', err);
@@ -151,7 +205,7 @@ export const useDiscoveryPackages = () => {
     }
   };
 
-  const deletePackage = async (id: string) => {
+  const deletePackage = async (id: string): Promise<boolean> => {
     try {
       const { error } = await supabase
         .from('discovery_packages')
@@ -173,7 +227,7 @@ export const useDiscoveryPackages = () => {
         description: "Discovery package deleted successfully",
       });
 
-      await fetchPackages(); // Refresh the list
+      await fetchPackages();
       return true;
     } catch (err) {
       console.error('Error:', err);
@@ -206,6 +260,7 @@ export const useDiscoveryPackages = () => {
     deletePackage,
     publishPackage,
     unpublishPackage,
+    getPackageById,
     refreshPackages: fetchPackages,
   };
 };

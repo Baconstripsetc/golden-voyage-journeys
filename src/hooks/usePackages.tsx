@@ -35,6 +35,7 @@ export const usePackages = () => {
 
   const fetchPackages = async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('travel_packages')
         .select('*')
@@ -50,7 +51,6 @@ export const usePackages = () => {
         return;
       }
 
-      // Transform the data to match our TravelPackage interface
       const transformedPackages: TravelPackage[] = (data || []).map(pkg => ({
         ...pkg,
         status: pkg.status as 'draft' | 'published',
@@ -78,11 +78,98 @@ export const usePackages = () => {
     }
   };
 
-  const createPackage = async (packageData: Omit<TravelPackage, 'id' | 'created_at' | 'updated_at'>) => {
+  const getPackageById = async (id: string): Promise<TravelPackage | null> => {
     try {
       const { data, error } = await supabase
         .from('travel_packages')
-        .insert([packageData])
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching package:', error);
+        return null;
+      }
+
+      return {
+        ...data,
+        status: data.status as 'draft' | 'published',
+        images: Array.isArray(data.images) ? data.images as string[] : [],
+        highlights: Array.isArray(data.highlights) ? data.highlights as string[] : [],
+        inclusions: Array.isArray(data.inclusions) ? data.inclusions as string[] : [],
+        exclusions: Array.isArray(data.exclusions) ? data.exclusions as string[] : [],
+        itinerary: Array.isArray(data.itinerary) ? data.itinerary as Array<{
+          day: string;
+          activity: string;
+          accommodation: string;
+        }> : [],
+      };
+    } catch (err) {
+      console.error('Error:', err);
+      return null;
+    }
+  };
+
+  const getPackageBySlug = async (slug: string): Promise<TravelPackage | null> => {
+    try {
+      const { data, error } = await supabase
+        .from('travel_packages')
+        .select('*')
+        .eq('slug', slug)
+        .eq('status', 'published')
+        .single();
+
+      if (error) {
+        console.error('Error fetching package:', error);
+        return null;
+      }
+
+      return {
+        ...data,
+        status: data.status as 'draft' | 'published',
+        images: Array.isArray(data.images) ? data.images as string[] : [],
+        highlights: Array.isArray(data.highlights) ? data.highlights as string[] : [],
+        inclusions: Array.isArray(data.inclusions) ? data.inclusions as string[] : [],
+        exclusions: Array.isArray(data.exclusions) ? data.exclusions as string[] : [],
+        itinerary: Array.isArray(data.itinerary) ? data.itinerary as Array<{
+          day: string;
+          activity: string;
+          accommodation: string;
+        }> : [],
+      };
+    } catch (err) {
+      console.error('Error:', err);
+      return null;
+    }
+  };
+
+  const createPackage = async (packageData: Omit<TravelPackage, 'id' | 'created_at' | 'updated_at'>): Promise<TravelPackage | null> => {
+    try {
+      // Generate unique slug
+      const { data: slugData, error: slugError } = await supabase
+        .rpc('generate_unique_slug', { 
+          title_text: packageData.title, 
+          table_name: 'travel_packages' 
+        });
+
+      if (slugError) {
+        console.error('Error generating slug:', slugError);
+        toast({
+          title: "Error",
+          description: "Failed to generate unique slug",
+          variant: "destructive",
+        });
+        return null;
+      }
+
+      const finalPackageData = {
+        ...packageData,
+        slug: slugData || packageData.slug,
+      };
+
+      const { data, error } = await supabase
+        .from('travel_packages')
+        .insert([finalPackageData])
         .select()
         .single();
 
@@ -101,7 +188,7 @@ export const usePackages = () => {
         description: "Package created successfully",
       });
 
-      await fetchPackages(); // Refresh the list
+      await fetchPackages();
       return data;
     } catch (err) {
       console.error('Error:', err);
@@ -114,7 +201,7 @@ export const usePackages = () => {
     }
   };
 
-  const updatePackage = async (id: string, packageData: Partial<TravelPackage>) => {
+  const updatePackage = async (id: string, packageData: Partial<TravelPackage>): Promise<TravelPackage | null> => {
     try {
       const { data, error } = await supabase
         .from('travel_packages')
@@ -138,7 +225,7 @@ export const usePackages = () => {
         description: "Package updated successfully",
       });
 
-      await fetchPackages(); // Refresh the list
+      await fetchPackages();
       return data;
     } catch (err) {
       console.error('Error:', err);
@@ -151,7 +238,7 @@ export const usePackages = () => {
     }
   };
 
-  const deletePackage = async (id: string) => {
+  const deletePackage = async (id: string): Promise<boolean> => {
     try {
       const { error } = await supabase
         .from('travel_packages')
@@ -173,7 +260,7 @@ export const usePackages = () => {
         description: "Package deleted successfully",
       });
 
-      await fetchPackages(); // Refresh the list
+      await fetchPackages();
       return true;
     } catch (err) {
       console.error('Error:', err);
@@ -206,6 +293,8 @@ export const usePackages = () => {
     deletePackage,
     publishPackage,
     unpublishPackage,
+    getPackageById,
+    getPackageBySlug,
     refreshPackages: fetchPackages,
   };
 };

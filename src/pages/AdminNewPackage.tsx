@@ -1,80 +1,123 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AdminSidebar from '../components/AdminSidebar';
+import ImageUpload from '../components/ImageUpload';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Upload, Plus, X } from 'lucide-react';
+import { Textarea } from "@/components/ui/textarea";
+import { Plus, X } from 'lucide-react';
+import { usePackages, TravelPackage } from '@/hooks/usePackages';
+import { useDiscoveryPackages, DiscoveryPackage } from '@/hooks/useDiscoveryPackages';
+import { useAuth } from '@/hooks/useAuth';
 
 const AdminNewPackage = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { isAuthenticated } = useAuth();
+  const { createPackage, updatePackage, getPackageById } = usePackages();
+  const { createPackage: createDiscoveryPackage, updatePackage: updateDiscoveryPackage, getPackageById: getDiscoveryPackageById } = useDiscoveryPackages();
+  
+  const isDiscovery = location.pathname.includes('discovery');
+  const isEditing = !!id;
+  
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
     price: '',
     duration: '',
-    travelPeriod: '',
+    travel_period: '',
+    location: '',
     description: '',
+    images: [] as string[],
     highlights: [''],
-    itinerary: [{ day: 1, stopName: '', accommodation: '', activities: '' }],
-    included: [''],
-    publishStatus: 'Draft'
+    itinerary: [{ day: '', activity: '', accommodation: '' }],
+    inclusions: [''],
+    exclusions: [''],
+    status: 'draft' as 'draft' | 'published'
   });
 
   useEffect(() => {
-    // Check if admin is logged in
-    if (!localStorage.getItem('adminLoggedIn')) {
+    if (!isAuthenticated) {
       navigate('/admin');
+      return;
     }
-  }, [navigate]);
+
+    if (isEditing && id) {
+      loadPackage();
+    }
+  }, [isAuthenticated, navigate, id, isEditing]);
+
+  const loadPackage = async () => {
+    if (!id) return;
+    
+    setLoading(true);
+    try {
+      const pkg = isDiscovery 
+        ? await getDiscoveryPackageById(id)
+        : await getPackageById(id);
+      
+      if (pkg) {
+        setFormData({
+          title: pkg.title,
+          slug: pkg.slug,
+          price: pkg.price,
+          duration: pkg.duration || '',
+          travel_period: pkg.travel_period || '',
+          location: pkg.location || '',
+          description: pkg.description || '',
+          images: pkg.images || [],
+          highlights: pkg.highlights && pkg.highlights.length > 0 ? pkg.highlights : [''],
+          itinerary: pkg.itinerary && pkg.itinerary.length > 0 ? pkg.itinerary : [{ day: '', activity: '', accommodation: '' }],
+          inclusions: pkg.inclusions && pkg.inclusions.length > 0 ? pkg.inclusions : [''],
+          exclusions: pkg.exclusions && pkg.exclusions.length > 0 ? pkg.exclusions : [''],
+          status: pkg.status
+        });
+      }
+    } catch (error) {
+      console.error('Error loading package:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    
-    // Auto-generate slug from title
-    if (field === 'title') {
-      const slug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      setFormData(prev => ({ ...prev, slug }));
-    }
   };
 
-  const addHighlight = () => {
+  const addArrayItem = (field: 'highlights' | 'inclusions' | 'exclusions', defaultValue = '') => {
     setFormData(prev => ({
       ...prev,
-      highlights: [...prev.highlights, '']
+      [field]: [...prev[field], defaultValue]
     }));
   };
 
-  const updateHighlight = (index: number, value: string) => {
+  const updateArrayItem = (field: 'highlights' | 'inclusions' | 'exclusions', index: number, value: string) => {
     setFormData(prev => ({
       ...prev,
-      highlights: prev.highlights.map((h, i) => i === index ? value : h)
+      [field]: prev[field].map((item, i) => i === index ? value : item)
     }));
   };
 
-  const removeHighlight = (index: number) => {
+  const removeArrayItem = (field: 'highlights' | 'inclusions' | 'exclusions', index: number) => {
     setFormData(prev => ({
       ...prev,
-      highlights: prev.highlights.filter((_, i) => i !== index)
+      [field]: prev[field].filter((_, i) => i !== index)
     }));
   };
 
   const addItineraryDay = () => {
     setFormData(prev => ({
       ...prev,
-      itinerary: [...prev.itinerary, { 
-        day: prev.itinerary.length + 1, 
-        stopName: '', 
-        accommodation: '', 
-        activities: '' 
-      }]
+      itinerary: [...prev.itinerary, { day: '', activity: '', accommodation: '' }]
     }));
   };
 
-  const updateItinerary = (index: number, field: string, value: string) => {
+  const updateItinerary = (index: number, field: 'day' | 'activity' | 'accommodation', value: string) => {
     setFormData(prev => ({
       ...prev,
       itinerary: prev.itinerary.map((item, i) => 
@@ -83,38 +126,68 @@ const AdminNewPackage = () => {
     }));
   };
 
-  const addIncludedItem = () => {
+  const removeItineraryDay = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      included: [...prev.included, '']
+      itinerary: prev.itinerary.filter((_, i) => i !== index)
     }));
   };
 
-  const updateIncluded = (index: number, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      included: prev.included.map((item, i) => i === index ? value : item)
-    }));
+  const handleSave = async (publish = false) => {
+    if (!formData.title.trim()) {
+      alert('Please enter a title');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const packageData = {
+        ...formData,
+        status: publish ? 'published' as const : 'draft' as const,
+        highlights: formData.highlights.filter(h => h.trim() !== ''),
+        inclusions: formData.inclusions.filter(i => i.trim() !== ''),
+        exclusions: formData.exclusions.filter(e => e.trim() !== ''),
+        itinerary: formData.itinerary.filter(item => 
+          item.day.trim() !== '' || item.activity.trim() !== '' || item.accommodation.trim() !== ''
+        )
+      };
+
+      let result;
+      if (isEditing && id) {
+        result = isDiscovery 
+          ? await updateDiscoveryPackage(id, packageData)
+          : await updatePackage(id, packageData);
+      } else {
+        result = isDiscovery 
+          ? await createDiscoveryPackage(packageData)
+          : await createPackage(packageData);
+      }
+
+      if (result) {
+        const dashboardPath = isDiscovery ? '/admin/discovery' : '/admin/dashboard';
+        navigate(dashboardPath);
+      }
+    } catch (error) {
+      console.error('Error saving package:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const removeIncluded = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      included: prev.included.filter((_, i) => i !== index)
-    }));
-  };
+  if (loading && isEditing) {
+    return (
+      <div className="flex h-screen bg-gray-50">
+        <AdminSidebar />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-lg">Loading package...</div>
+        </div>
+      </div>
+    );
+  }
 
-  const handleSave = (publish = false) => {
-    const finalData = {
-      ...formData,
-      publishStatus: publish ? 'Published' : 'Draft'
-    };
-    
-    // In real app, this would save to backend
-    console.log('Saving package:', finalData);
-    alert(`Package ${publish ? 'published' : 'saved as draft'} successfully!`);
-    navigate('/admin/dashboard');
-  };
+  const pageTitle = isEditing 
+    ? `Edit ${isDiscovery ? 'Discovery' : 'Package'}` 
+    : `Create New ${isDiscovery ? 'Discovery' : 'Package'}`;
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -125,44 +198,40 @@ const AdminNewPackage = () => {
           <div className="flex justify-between items-center mb-8">
             <div>
               <div className="flex items-center text-sm text-gray-500 mb-2">
-                <span>Manage Packages</span>
+                <span>Manage {isDiscovery ? 'Discovery' : 'Packages'}</span>
                 <span className="mx-2">›</span>
-                <span>New Package</span>
+                <span>{pageTitle}</span>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">Create New Package</h1>
-              <p className="text-gray-600 mt-1">Fill in the details to create a new travel package</p>
+              <h1 className="text-2xl font-bold text-gray-900">{pageTitle}</h1>
+              <p className="text-gray-600 mt-1">Fill in the details to {isEditing ? 'update' : 'create'} a travel {isDiscovery ? 'discovery' : 'package'}</p>
             </div>
             <div className="flex gap-3">
               <Button 
                 variant="outline"
                 onClick={() => handleSave(false)}
+                disabled={loading}
               >
-                Save Draft
+                {loading ? 'Saving...' : 'Save Draft'}
               </Button>
               <Button 
                 onClick={() => handleSave(true)}
                 className="bg-blue-600 hover:bg-blue-700"
+                disabled={loading}
               >
-                Publish
+                {loading ? 'Publishing...' : 'Publish'}
               </Button>
             </div>
           </div>
 
           <div className="space-y-8">
-            {/* Header Carousel */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Header Carousel</CardTitle>
-                <p className="text-sm text-gray-600">Upload 1-4 images for the package header</p>
-              </CardHeader>
-              <CardContent>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                  <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">Click to upload or drag and drop</p>
-                  <p className="text-sm text-gray-500 mt-1">0/4 images uploaded</p>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Image Upload */}
+            <ImageUpload
+              images={formData.images}
+              onImagesChange={(images) => setFormData(prev => ({ ...prev, images }))}
+              maxImages={4}
+              title="Package Images"
+              description="Upload 1-4 images for the package header"
+            />
 
             {/* Basic Information */}
             <Card>
@@ -172,7 +241,7 @@ const AdminNewPackage = () => {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="title">Title</Label>
+                    <Label htmlFor="title">Title *</Label>
                     <Input
                       id="title"
                       placeholder="Enter package title"
@@ -181,7 +250,7 @@ const AdminNewPackage = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="slug">Slug</Label>
+                    <Label htmlFor="slug">URL Slug</Label>
                     <Input
                       id="slug"
                       placeholder="package-url-slug"
@@ -193,10 +262,10 @@ const AdminNewPackage = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <Label htmlFor="price">Price</Label>
+                    <Label htmlFor="price">Price *</Label>
                     <Input
                       id="price"
-                      placeholder="R27,999 PPS"
+                      placeholder="$2,999"
                       value={formData.price}
                       onChange={(e) => handleInputChange('price', e.target.value)}
                     />
@@ -205,63 +274,70 @@ const AdminNewPackage = () => {
                     <Label htmlFor="duration">Duration</Label>
                     <Input
                       id="duration"
-                      placeholder="7 nights + 1 free"
+                      placeholder="7 days"
                       value={formData.duration}
                       onChange={(e) => handleInputChange('duration', e.target.value)}
                     />
                   </div>
                   <div>
-                    <Label htmlFor="travelPeriod">Travel Period</Label>
+                    <Label htmlFor="location">Location</Label>
                     <Input
-                      id="travelPeriod"
-                      placeholder="Feb-Nov 2026"
-                      value={formData.travelPeriod}
-                      onChange={(e) => handleInputChange('travelPeriod', e.target.value)}
+                      id="location"
+                      placeholder="Italy"
+                      value={formData.location}
+                      onChange={(e) => handleInputChange('location', e.target.value)}
                     />
                   </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="travel_period">Travel Period</Label>
+                  <Input
+                    id="travel_period"
+                    placeholder="Feb-Nov 2026"
+                    value={formData.travel_period}
+                    onChange={(e) => handleInputChange('travel_period', e.target.value)}
+                  />
                 </div>
               </CardContent>
             </Card>
 
-            {/* Brief Detail */}
+            {/* Description */}
             <Card>
               <CardHeader>
-                <CardTitle>Brief Detail</CardTitle>
+                <CardTitle>Description</CardTitle>
               </CardHeader>
               <CardContent>
-                <Label htmlFor="description">Description</Label>
-                <textarea
+                <Label htmlFor="description">Package Description</Label>
+                <Textarea
                   id="description"
                   rows={4}
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Enter a brief description of the package..."
+                  placeholder="Enter a detailed description of the package..."
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
                 />
-                <p className="text-sm text-gray-500 mt-1">0/300</p>
               </CardContent>
             </Card>
 
-            {/* Trip Highlights */}
+            {/* Highlights */}
             <Card>
               <CardHeader>
-                <CardTitle>Trip Highlights</CardTitle>
-                <p className="text-sm text-gray-600">Add up to 10 key highlights</p>
+                <CardTitle>Package Highlights</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {formData.highlights.map((highlight, index) => (
                   <div key={index} className="flex gap-2">
                     <Input
-                      placeholder="Highlight 1"
+                      placeholder={`Highlight ${index + 1}`}
                       value={highlight}
-                      onChange={(e) => updateHighlight(index, e.target.value)}
+                      onChange={(e) => updateArrayItem('highlights', index, e.target.value)}
                       className="flex-1"
                     />
                     {formData.highlights.length > 1 && (
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => removeHighlight(index)}
+                        onClick={() => removeArrayItem('highlights', index)}
                         className="text-red-600 hover:text-red-700"
                       >
                         <X className="w-4 h-4" />
@@ -271,7 +347,7 @@ const AdminNewPackage = () => {
                 ))}
                 <Button
                   variant="outline"
-                  onClick={addHighlight}
+                  onClick={() => addArrayItem('highlights')}
                   className="w-full"
                 >
                   <Plus className="w-4 h-4 mr-2" />
@@ -280,26 +356,85 @@ const AdminNewPackage = () => {
               </CardContent>
             </Card>
 
-            {/* What's Included */}
+            {/* Itinerary */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Itinerary</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {formData.itinerary.map((item, index) => (
+                  <div key={index} className="border rounded-lg p-4">
+                    <div className="flex justify-between items-center mb-3">
+                      <h4 className="font-medium">Day {index + 1}</h4>
+                      {formData.itinerary.length > 1 && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeItineraryDay(index)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div>
+                        <Label>Day Name</Label>
+                        <Input
+                          placeholder="Arrival"
+                          value={item.day}
+                          onChange={(e) => updateItinerary(index, 'day', e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <Label>Activities</Label>
+                        <Input
+                          placeholder="City tour, welcome dinner"
+                          value={item.activity}
+                          onChange={(e) => updateItinerary(index, 'activity', e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <Label>Accommodation</Label>
+                        <Input
+                          placeholder="Hotel Name"
+                          value={item.accommodation}
+                          onChange={(e) => updateItinerary(index, 'accommodation', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <Button
+                  variant="outline"
+                  onClick={addItineraryDay}
+                  className="w-full"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Day
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Inclusions */}
             <Card>
               <CardHeader>
                 <CardTitle>What's Included</CardTitle>
-                <p className="text-sm text-gray-600">Add up to 15 included items</p>
               </CardHeader>
               <CardContent className="space-y-3">
-                {formData.included.map((item, index) => (
+                {formData.inclusions.map((item, index) => (
                   <div key={index} className="flex gap-2">
                     <Input
-                      placeholder="Included Item 1"
+                      placeholder={`Included Item ${index + 1}`}
                       value={item}
-                      onChange={(e) => updateIncluded(index, e.target.value)}
+                      onChange={(e) => updateArrayItem('inclusions', index, e.target.value)}
                       className="flex-1"
                     />
-                    {formData.included.length > 1 && (
+                    {formData.inclusions.length > 1 && (
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => removeIncluded(index)}
+                        onClick={() => removeArrayItem('inclusions', index)}
                         className="text-red-600 hover:text-red-700"
                       >
                         <X className="w-4 h-4" />
@@ -309,27 +444,66 @@ const AdminNewPackage = () => {
                 ))}
                 <Button
                   variant="outline"
-                  onClick={addIncludedItem}
+                  onClick={() => addArrayItem('inclusions')}
                   className="w-full"
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Add Item
+                  Add Inclusion
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Publish Settings */}
+            {/* Exclusions */}
             <Card>
               <CardHeader>
-                <CardTitle>Publish Settings</CardTitle>
+                <CardTitle>What's Not Included</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {formData.exclusions.map((item, index) => (
+                  <div key={index} className="flex gap-2">
+                    <Input
+                      placeholder={`Excluded Item ${index + 1}`}
+                      value={item}
+                      onChange={(e) => updateArrayItem('exclusions', index, e.target.value)}
+                      className="flex-1"
+                    />
+                    {formData.exclusions.length > 1 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeArrayItem('exclusions', index)}
+                        className="text-red-600 hover:text-red-700"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button
+                  variant="outline"
+                  onClick={() => addArrayItem('exclusions')}
+                  className="w-full"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Exclusion
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Status */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Publication Status</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>Publication Status</Label>
-                    <p className="text-sm text-gray-600">Package will be saved as draft</p>
+                    <Label>Current Status</Label>
+                    <p className="text-sm text-gray-600">Package will be saved with the selected status</p>
                   </div>
-                  <Badge variant="secondary">Draft</Badge>
+                  <Badge variant={formData.status === 'published' ? 'default' : 'secondary'}>
+                    {formData.status === 'published' ? 'Published' : 'Draft'}
+                  </Badge>
                 </div>
               </CardContent>
             </Card>
@@ -337,21 +511,24 @@ const AdminNewPackage = () => {
             <div className="flex justify-end gap-3 pb-8">
               <Button 
                 variant="outline"
-                onClick={() => navigate('/admin/dashboard')}
+                onClick={() => navigate(isDiscovery ? '/admin/discovery' : '/admin/dashboard')}
+                disabled={loading}
               >
                 Cancel
               </Button>
               <Button 
                 variant="outline"
                 onClick={() => handleSave(false)}
+                disabled={loading}
               >
-                Save Draft
+                {loading ? 'Saving...' : 'Save Draft'}
               </Button>
               <Button 
                 onClick={() => handleSave(true)}
                 className="bg-blue-600 hover:bg-blue-700"
+                disabled={loading}
               >
-                Publish Package
+                {loading ? 'Publishing...' : 'Publish Package'}
               </Button>
             </div>
           </div>

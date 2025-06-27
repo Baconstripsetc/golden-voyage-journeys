@@ -1,175 +1,150 @@
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Star, MapPin } from 'lucide-react';
+import { useDiscoveryPackages, DiscoveryPackage } from '@/hooks/useDiscoveryPackages';
+import { Link } from 'react-router-dom';
 
 const DiscoverSection = () => {
-  const [activeFilter, setActiveFilter] = useState("All");
+  const { packages, loading } = useDiscoveryPackages();
+  const [displayPackages, setDisplayPackages] = useState<DiscoveryPackage[]>([]);
 
-  const filters = [
-    "All",
-    "Family Trips", 
-    "For Couples", 
-    "Adventure", 
-    "Cultural Heritage", 
-    "Wellness Retreats"
-  ];
+  useEffect(() => {
+    // Only show published packages, limit to 6 for the homepage
+    const publishedPackages = packages
+      .filter(pkg => pkg.status === 'published')
+      .slice(0, 6);
+    setDisplayPackages(publishedPackages);
+  }, [packages]);
 
-  const packages = [
-    {
-      id: 1,
-      title: "Serengeti Safari Adventure",
-      location: "Tanzania, Africa",
-      image: "https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      price: "$4,500",
-      duration: "8 days",
-      category: ["Adventure", "For Couples"],
-      description: "Experience the great migration in luxury tented camps"
-    },
-    {
-      id: 2,
-      title: "Tuscany Wine & Culture",
-      location: "Italy",
-      image: "https://images.unsplash.com/photo-1523906921802-b5d2d899e93b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      price: "$3,200",
-      duration: "7 days",
-      category: ["Cultural Heritage", "For Couples"],
-      description: "Private vineyard tours and Renaissance art immersion"
-    },
-    {
-      id: 3,
-      title: "Himalayan Wellness Retreat",
-      location: "Nepal",
-      image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      price: "$2,800",
-      duration: "10 days",
-      category: ["Wellness Retreats", "Adventure"],
-      description: "Meditation, yoga, and mountain serenity"
-    },
-    {
-      id: 4,
-      title: "Patagonia Family Explorer",
-      location: "Chile & Argentina",
-      image: "https://images.unsplash.com/photo-1518767714831-16f72abaeba5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      price: "$5,200",
-      duration: "12 days",
-      category: ["Family Trips", "Adventure"],
-      description: "Multi-generational adventure through pristine wilderness"
-    },
-    {
-      id: 5,
-      title: "Japanese Cultural Immersion",
-      location: "Japan",
-      image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      price: "$4,800",
-      duration: "9 days",
-      category: ["Cultural Heritage", "For Couples"],
-      description: "Tea ceremonies, temple stays, and artisan workshops"
-    },
-    {
-      id: 6,
-      title: "Bali Wellness & Family Bonding",
-      location: "Indonesia",
-      image: "https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      price: "$3,600",
-      duration: "8 days",
-      category: ["Family Trips", "Wellness Retreats"],
-      description: "Spa treatments, cooking classes, and cultural activities"
-    }
-  ];
+  if (loading) {
+    return (
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Discover Hidden Gems
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Uncover secret destinations and unique experiences that most travelers never find
+            </p>
+          </div>
+          <div className="text-center">Loading discovery packages...</div>
+        </div>
+      </section>
+    );
+  }
 
-  const filteredPackages = activeFilter === "All" 
-    ? packages 
-    : packages.filter(pkg => pkg.category.includes(activeFilter));
+  if (displayPackages.length === 0) {
+    return (
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Discover Hidden Gems
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Uncover secret destinations and unique experiences that most travelers never find
+            </p>
+          </div>
+          <div className="text-center text-gray-600">
+            No discovery packages available at the moment. Check back soon!
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="py-12 md:py-20 bg-white">
+    <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
-            Discover
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Discover Hidden Gems
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-            Curated experiences designed for the sophisticated traveler seeking authentic adventures
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Uncover secret destinations and unique experiences that most travelers never find
           </p>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-8 md:mb-12 px-2">
-          {filters.map((filter) => (
-            <Button
-              key={filter}
-              variant={activeFilter === filter ? "default" : "outline"}
-              onClick={() => setActiveFilter(filter)}
-              className={`rounded-full px-3 sm:px-4 md:px-6 py-2 text-xs sm:text-sm transition-all ${
-                activeFilter === filter
-                  ? "bg-[#A6CE38] hover:bg-[#95b632] text-white"
-                  : "border-[#A6CE38] text-[#A6CE38] hover:bg-[#A6CE38] hover:text-white"
-              }`}
-              size="sm"
-            >
-              {filter}
-            </Button>
-          ))}
-        </div>
-
-        {/* Package Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {filteredPackages.map((pkg) => (
-            <Card key={pkg.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-              <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden">
-                <img 
-                  src={pkg.image} 
-                  alt={pkg.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute top-3 md:top-4 right-3 md:right-4">
-                  <Badge className="bg-[#A6CE38] text-white text-xs md:text-sm">
-                    {pkg.price}
-                  </Badge>
-                </div>
-              </div>
-              <CardContent className="p-4 md:p-6">
-                <div className="space-y-3">
-                  <div className="flex items-center text-xs md:text-sm text-gray-500">
-                    <MapPin className="w-3 h-3 md:w-4 md:h-4 mr-1" />
-                    {pkg.location}
-                  </div>
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 leading-tight">{pkg.title}</h3>
-                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">{pkg.description}</p>
-                  <div className="flex items-center justify-between pt-2">
-                    <div className="flex items-center text-xs md:text-sm text-gray-500">
-                      <Calendar className="w-3 h-3 md:w-4 md:h-4 mr-1" />
-                      {pkg.duration}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {displayPackages.map((pkg) => (
+            <Link key={pkg.id} to={`/package/${pkg.id}`}>
+              <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                <div className="aspect-video bg-gray-200 relative">
+                  {pkg.images && pkg.images.length > 0 ? (
+                    <img 
+                      src={pkg.images[0]} 
+                      alt={pkg.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400"><div class="text-center"><div class="text-4xl mb-2">🏞️</div><div>No Image</div></div></div>';
+                        }
+                      }}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-400">
+                      <div className="text-center">
+                        <div className="text-4xl mb-2">🏞️</div>
+                        <div>No Image</div>
+                      </div>
                     </div>
-                    <Link to={`/package/${pkg.id}`}>
-                      <Button 
-                        size="sm" 
-                        className="bg-[#A6CE38] hover:bg-[#95b632] text-white px-3 md:px-4 py-2 text-xs md:text-sm"
-                      >
-                        Learn More
-                      </Button>
-                    </Link>
+                  )}
+                  <div className="absolute top-4 left-4">
+                    <Badge className="bg-green-600 hover:bg-green-700">Discovery</Badge>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+                
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    {pkg.location && (
+                      <>
+                        <MapPin className="w-4 h-4 text-gray-500" />
+                        <span className="text-sm text-gray-600">{pkg.location}</span>
+                      </>
+                    )}
+                  </div>
+                  
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                    {pkg.title}
+                  </h3>
+                  
+                  <p className="text-gray-600 mb-4 line-clamp-2">
+                    {pkg.description}
+                  </p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      <span className="text-sm font-medium">{pkg.rating || 4.5}</span>
+                      <span className="text-sm text-gray-500">({pkg.review_count || 0})</span>
+                    </div>
+                    
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-blue-600">{pkg.price}</div>
+                      {pkg.duration && (
+                        <div className="text-sm text-gray-500">{pkg.duration}</div>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center mt-12 md:mt-16">
-          <Button 
-            size="lg" 
-            variant="outline"
-            className="border-2 border-[#A6CE38] text-[#A6CE38] hover:bg-[#A6CE38] hover:text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold rounded-full"
+        <div className="text-center mt-12">
+          <Link 
+            to="/discover" 
+            className="inline-block bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
           >
-            View All Packages
-          </Button>
+            View All Discoveries
+          </Link>
         </div>
       </div>
     </section>
