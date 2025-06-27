@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Settings, Package, Plus, LogOut } from 'lucide-react';
+import { Settings, Package, Plus, LogOut, Compass } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/hooks/useAuth';
 
@@ -13,7 +13,7 @@ const AdminSidebar = () => {
     logout();
   };
 
-  const menuItems = [
+  const travelMenuItems = [
     {
       title: 'Manage Packages',
       icon: Package,
@@ -25,7 +25,25 @@ const AdminSidebar = () => {
       icon: Plus,
       path: '/admin/new-package',
       active: location.pathname === '/admin/new-package' || location.pathname.includes('/admin/edit-package')
+    }
+  ];
+
+  const discoveryMenuItems = [
+    {
+      title: 'Manage Discovery',
+      icon: Compass,
+      path: '/admin/discovery',
+      active: location.pathname === '/admin/discovery'
     },
+    {
+      title: 'Add New Discovery',
+      icon: Plus,
+      path: '/admin/new-discovery',
+      active: location.pathname === '/admin/new-discovery' || location.pathname.includes('/admin/edit-discovery')
+    }
+  ];
+
+  const settingsMenuItems = [
     {
       title: 'Settings',
       icon: Settings,
@@ -44,10 +62,57 @@ const AdminSidebar = () => {
       <div className="flex-1 py-6">
         <div className="px-4 mb-6">
           <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
-            Packages
+            Travel Packages
           </h3>
           <nav className="space-y-1">
-            {menuItems.map((item) => {
+            {travelMenuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    item.active
+                      ? 'bg-gray-100 text-gray-900'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 mr-3" />
+                  {item.title}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="px-4 mb-6">
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+            Discovery Packages
+          </h3>
+          <nav className="space-y-1">
+            {discoveryMenuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    item.active
+                      ? 'bg-gray-100 text-gray-900'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 mr-3" />
+                  {item.title}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="px-4 mb-6">
+          <nav className="space-y-1">
+            {settingsMenuItems.map((item) => {
               const Icon = item.icon;
               return (
                 <Link

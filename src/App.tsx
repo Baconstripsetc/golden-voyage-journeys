@@ -14,6 +14,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminNewPackage from "./pages/AdminNewPackage";
 import AdminSettings from "./pages/AdminSettings";
+import AdminDiscovery from "./pages/AdminDiscovery";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,9 @@ const App = () => (
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/new-package" element={<AdminNewPackage />} />
             <Route path="/admin/edit-package/:id" element={<AdminNewPackage />} />
+            <Route path="/admin/discovery" element={<AdminDiscovery />} />
+            <Route path="/admin/new-discovery" element={<AdminNewPackage />} />
+            <Route path="/admin/edit-discovery/:id" element={<AdminNewPackage />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
