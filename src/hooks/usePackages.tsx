@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 export interface TravelPackage {
   id: string;
@@ -189,7 +188,19 @@ export const usePackages = () => {
       });
 
       await fetchPackages();
-      return data;
+      return {
+        ...data,
+        status: data.status as 'draft' | 'published',
+        images: Array.isArray(data.images) ? data.images as string[] : [],
+        highlights: Array.isArray(data.highlights) ? data.highlights as string[] : [],
+        inclusions: Array.isArray(data.inclusions) ? data.inclusions as string[] : [],
+        exclusions: Array.isArray(data.exclusions) ? data.exclusions as string[] : [],
+        itinerary: Array.isArray(data.itinerary) ? data.itinerary as Array<{
+          day: string;
+          activity: string;
+          accommodation: string;
+        }> : [],
+      };
     } catch (err) {
       console.error('Error:', err);
       toast({
@@ -226,7 +237,19 @@ export const usePackages = () => {
       });
 
       await fetchPackages();
-      return data;
+      return {
+        ...data,
+        status: data.status as 'draft' | 'published',
+        images: Array.isArray(data.images) ? data.images as string[] : [],
+        highlights: Array.isArray(data.highlights) ? data.highlights as string[] : [],
+        inclusions: Array.isArray(data.inclusions) ? data.inclusions as string[] : [],
+        exclusions: Array.isArray(data.exclusions) ? data.exclusions as string[] : [],
+        itinerary: Array.isArray(data.itinerary) ? data.itinerary as Array<{
+          day: string;
+          activity: string;
+          accommodation: string;
+        }> : [],
+      };
     } catch (err) {
       console.error('Error:', err);
       toast({
