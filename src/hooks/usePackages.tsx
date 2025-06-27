@@ -54,11 +54,15 @@ export const usePackages = () => {
       const transformedPackages: TravelPackage[] = (data || []).map(pkg => ({
         ...pkg,
         status: pkg.status as 'draft' | 'published',
-        images: Array.isArray(pkg.images) ? pkg.images : [],
-        highlights: Array.isArray(pkg.highlights) ? pkg.highlights : [],
-        inclusions: Array.isArray(pkg.inclusions) ? pkg.inclusions : [],
-        exclusions: Array.isArray(pkg.exclusions) ? pkg.exclusions : [],
-        itinerary: Array.isArray(pkg.itinerary) ? pkg.itinerary : [],
+        images: Array.isArray(pkg.images) ? pkg.images as string[] : [],
+        highlights: Array.isArray(pkg.highlights) ? pkg.highlights as string[] : [],
+        inclusions: Array.isArray(pkg.inclusions) ? pkg.inclusions as string[] : [],
+        exclusions: Array.isArray(pkg.exclusions) ? pkg.exclusions as string[] : [],
+        itinerary: Array.isArray(pkg.itinerary) ? pkg.itinerary as Array<{
+          day: string;
+          activity: string;
+          accommodation: string;
+        }> : [],
       }));
 
       setPackages(transformedPackages);
