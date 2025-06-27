@@ -50,7 +50,18 @@ export const usePackages = () => {
         return;
       }
 
-      setPackages(data || []);
+      // Transform the data to match our TravelPackage interface
+      const transformedPackages: TravelPackage[] = (data || []).map(pkg => ({
+        ...pkg,
+        status: pkg.status as 'draft' | 'published',
+        images: Array.isArray(pkg.images) ? pkg.images : [],
+        highlights: Array.isArray(pkg.highlights) ? pkg.highlights : [],
+        inclusions: Array.isArray(pkg.inclusions) ? pkg.inclusions : [],
+        exclusions: Array.isArray(pkg.exclusions) ? pkg.exclusions : [],
+        itinerary: Array.isArray(pkg.itinerary) ? pkg.itinerary : [],
+      }));
+
+      setPackages(transformedPackages);
     } catch (err) {
       console.error('Error:', err);
       toast({
