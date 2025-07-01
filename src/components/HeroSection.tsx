@@ -40,15 +40,21 @@ const HeroSection = () => {
       <div className="relative z-10 container mx-auto px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 fade-in">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 leading-tight">
-            That's <span className="text-[#A6CE38]">75 years</span><br />
-            of <span className="text-[#A6CE38]">L'Esprit Libre</span>
+            Discover Hidden Corners<br />
+            of the <span className="text-[#A6CE38]">World</span>,<br />
+            Travel That <span className="text-[#A6CE38]">Feels Just Right</span>
           </h1>
           
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-            In 1950, we were the pioneers of sophisticated travel, creating unforgettable experiences 
-            for the discerning adventurer. Today, we continue to craft journeys that blend luxury 
-            with authentic discovery, designed specifically for those who appreciate the finer things in life.
-          </p>
+          <div className="space-y-4">
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800">
+              Luxury you can afford. Peace of mind you've earned.
+            </p>
+            
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
+              Thoughtfully crafted journeys, guided by real people who understand what makes a trip meaningful. 
+              Designed for travelers who know what they like, and are ready to see more.
+            </p>
+          </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 md:pt-6 px-4">
             <Button 

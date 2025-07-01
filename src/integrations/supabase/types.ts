@@ -165,7 +165,9 @@ export type Database = {
     }
     Functions: {
       generate_unique_slug: {
-        Args: { title_text: string; table_name: string }
+        Args:
+          | Record<PropertyKey, never>
+          | { title_text: string; table_name: string }
         Returns: string
       }
     }
