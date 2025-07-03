@@ -90,8 +90,8 @@ const UpcomingTripsSection = () => {
                 onClick={() => setActiveFilter(tag)}
                 className={`px-3 sm:px-4 py-2 rounded-full text-sm sm:text-base font-medium transition-all duration-200 whitespace-nowrap ${
                   activeFilter === tag
-                    ? 'bg-[#A6CE38] text-white shadow-md transform scale-105'
-                    : 'bg-white text-gray-700 border border-gray-300 hover:border-[#A6CE38] hover:text-[#A6CE38] hover:shadow-sm'
+                    ? 'bg-[#A7CE39] text-white shadow-md transform scale-105'
+                    : 'bg-white text-gray-700 border border-gray-300 hover:border-[#A7CE39] hover:text-[#A7CE39] hover:shadow-sm'
                 }`}
               >
                 {tag}
@@ -137,7 +137,7 @@ const UpcomingTripsSection = () => {
                         </div>
                       )}
                       <div className="absolute top-4 left-4">
-                        <Badge className="bg-[#A6CE38] hover:bg-[#95b632] text-white">Trip</Badge>
+                        <Badge className="bg-[#A7CE39] hover:bg-[#95b632] text-white">Trip</Badge>
                       </div>
                       
                       {/* Package Tags */}
@@ -186,7 +186,7 @@ const UpcomingTripsSection = () => {
                         </div>
                         
                         <div className="text-right">
-                          <div className="text-base sm:text-lg font-bold text-[#A6CE38]">{pkg.price}</div>
+                          <div className="text-base sm:text-lg font-bold text-[#A7CE39]">{pkg.price}</div>
                           {pkg.duration && (
                             <div className="text-xs sm:text-sm text-gray-500">{pkg.duration}</div>
                           )}
@@ -201,7 +201,7 @@ const UpcomingTripsSection = () => {
             <div className="text-center mt-12">
               <Link 
                 to="/upcoming-trips" 
-                className="inline-block bg-[#A6CE38] hover:bg-[#95b632] text-white px-6 sm:px-8 py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base"
+                className="inline-block bg-[#A7CE39] hover:bg-[#95b632] text-white px-6 sm:px-8 py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base"
               >
                 View All Trips
               </Link>
