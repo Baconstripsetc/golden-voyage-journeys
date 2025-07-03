@@ -94,3 +94,20 @@
 .fade-in {
   animation: fade-in 0.6s ease-out;
 }
+
+/* Brand color utilities */
+.brand-primary {
+  color: #A8D03D;
+}
+
+.bg-brand-primary {
+  background-color: #A8D03D;
+}
+
+.border-brand-primary {
+  border-color: #A8D03D;
+}
+
+.hover\:bg-brand-primary:hover {
+  background-color: #96BD35;
+}
