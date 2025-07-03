@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
@@ -123,7 +124,7 @@ const PackageDetails = () => {
             <div className="space-y-4 sm:space-y-6">
               <div>
                 <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4">
-                  <Badge className={`${isDiscovery ? "bg-[#A8D03D] hover:bg-[#96BD35]" : "bg-[#A8D03D] hover:bg-[#96BD35]"} text-white`}>
+                  <Badge className="bg-[#A8D03D] hover:bg-[#96BD35] text-white">
                     {isDiscovery ? 'Discovery' : 'Trip'}
                   </Badge>
                   {packageData.location && (

@@ -20,7 +20,7 @@ const DiscoverSection = () => {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50">
+      <section id="discover-section" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -38,7 +38,7 @@ const DiscoverSection = () => {
 
   if (displayPackages.length === 0) {
     return (
-      <section className="py-16 bg-gray-50">
+      <section id="discover-section" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -57,7 +57,7 @@ const DiscoverSection = () => {
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section id="discover-section" className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -96,7 +96,7 @@ const DiscoverSection = () => {
                     </div>
                   )}
                   <div className="absolute top-4 left-4">
-                    <Badge className="bg-green-600 hover:bg-green-700">Discovery</Badge>
+                    <Badge className="bg-[#A8D03D] hover:bg-[#96BD35] text-white">Discovery</Badge>
                   </div>
                 </div>
                 
@@ -126,7 +126,7 @@ const DiscoverSection = () => {
                     </div>
                     
                     <div className="text-right">
-                      <div className="text-lg font-bold text-blue-600">{pkg.price}</div>
+                      <div className="text-lg font-bold text-[#A8D03D]">{pkg.price}</div>
                       {pkg.duration && (
                         <div className="text-sm text-gray-500">{pkg.duration}</div>
                       )}
@@ -141,7 +141,7 @@ const DiscoverSection = () => {
         <div className="text-center mt-12">
           <Link 
             to="/discover" 
-            className="inline-block bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            className="inline-block bg-[#A8D03D] hover:bg-[#96BD35] text-white px-8 py-3 rounded-lg font-semibold transition-colors"
           >
             View All Discoveries
           </Link>

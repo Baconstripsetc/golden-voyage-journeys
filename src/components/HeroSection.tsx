@@ -27,6 +27,16 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, [brandLogos.length]);
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
       {/* Background image overlay */}
@@ -41,8 +51,8 @@ const HeroSection = () => {
         <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 fade-in">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 leading-tight">
             Discover Hidden Corners<br />
-            of the <span className="text-[#A6CE38]">World</span>,<br />
-            Travel That <span className="text-[#A6CE38]">Feels Just Right</span>
+            of the <span className="text-[#A8D03D]">World</span>,<br />
+            Travel That <span className="text-[#A8D03D]">Feels Just Right</span>
           </h1>
           
           <div className="space-y-4">
@@ -59,7 +69,8 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 md:pt-6 px-4">
             <Button 
               size="lg" 
-              className="bg-[#A6CE38] hover:bg-[#95b632] text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto"
+              className="bg-[#A8D03D] hover:bg-[#96BD35] text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto"
+              onClick={() => scrollToSection('discover-section')}
             >
               Discover Your Next Adventure
               <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
@@ -68,7 +79,8 @@ const HeroSection = () => {
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-2 border-[#A6CE38] text-[#A6CE38] hover:bg-[#A6CE38] hover:text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto"
+              className="border-2 border-[#A8D03D] text-[#A8D03D] hover:bg-[#A8D03D] hover:text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto"
+              onClick={() => scrollToSection('upcoming-trips-section')}
             >
               View Upcoming Trips
             </Button>

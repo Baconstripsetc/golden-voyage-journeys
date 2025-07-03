@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -36,7 +35,7 @@ const UpcomingTripsSection = () => {
 
   if (loading) {
     return (
-      <section className="py-8 sm:py-12 lg:py-16 bg-white">
+      <section id="upcoming-trips-section" className="py-8 sm:py-12 lg:py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#A8D03D] mx-auto"></div>
@@ -48,7 +47,7 @@ const UpcomingTripsSection = () => {
   }
 
   return (
-    <section className="py-8 sm:py-12 lg:py-16 bg-white">
+    <section id="upcoming-trips-section" className="py-8 sm:py-12 lg:py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
