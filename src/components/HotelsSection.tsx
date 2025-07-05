@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const HotelsSection = () => {
   return (
-    <section className="py-8 sm:py-12 lg:py-16 bg-gray-50">
+    <section className="py-8 sm:py-12 lg:py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">

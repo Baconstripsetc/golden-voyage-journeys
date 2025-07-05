@@ -20,7 +20,7 @@ const DiscoverSection = () => {
 
   if (loading) {
     return (
-      <section id="discover-section" className="py-16 bg-gray-50">
+      <section id="discover-section" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -38,7 +38,7 @@ const DiscoverSection = () => {
 
   if (displayPackages.length === 0) {
     return (
-      <section id="discover-section" className="py-16 bg-gray-50">
+      <section id="discover-section" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -57,7 +57,7 @@ const DiscoverSection = () => {
   }
 
   return (
-    <section id="discover-section" className="py-16 bg-gray-50">
+    <section id="discover-section" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
