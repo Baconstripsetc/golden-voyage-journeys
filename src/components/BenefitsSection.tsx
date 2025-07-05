@@ -30,7 +30,7 @@ const BenefitsSection = () => {
     <section className="py-8 sm:py-12 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
             Psst! There's more:
           </h2>
         </div>
@@ -42,10 +42,10 @@ const BenefitsSection = () => {
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100">
                   <benefit.icon className="w-6 h-6 sm:w-8 sm:h-8 text-[#A7CE39]" />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg sm:text-xl mb-1">
+                <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-1">
                   {benefit.title}
                 </h3>
-                <p className="text-gray-600 text-sm sm:text-base">
+                <p className="text-gray-600 text-xs sm:text-sm">
                   {benefit.subtitle}
                 </p>
               </div>

@@ -23,10 +23,10 @@ const DiscoverSection = () => {
       <section id="discover-section" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Discover Hidden Gems
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base text-gray-600 max-w-2xl mx-auto">
               Uncover secret destinations and unique experiences that most travelers never find
             </p>
           </div>
@@ -41,10 +41,10 @@ const DiscoverSection = () => {
       <section id="discover-section" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Discover Hidden Gems
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base text-gray-600 max-w-2xl mx-auto">
               Uncover secret destinations and unique experiences that most travelers never find
             </p>
           </div>
@@ -60,10 +60,10 @@ const DiscoverSection = () => {
     <section id="discover-section" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Discover Hidden Gems
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base text-gray-600 max-w-2xl mx-auto">
             Uncover secret destinations and unique experiences that most travelers never find
           </p>
         </div>
@@ -110,7 +110,7 @@ const DiscoverSection = () => {
                     )}
                   </div>
                   
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
                     {pkg.title}
                   </h3>
                   

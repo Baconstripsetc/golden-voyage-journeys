@@ -14,11 +14,11 @@ const HotelsSection = () => {
             </div>
           </div>
           
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
             Discounted Hotel Services
           </h2>
           
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-base text-gray-600 mb-8 max-w-2xl mx-auto">
             Stay in comfort with our exclusive hotel deals. From luxury resorts to boutique hotels, find your perfect accommodation at unbeatable prices.
           </p>
 
@@ -43,7 +43,7 @@ const HotelsSection = () => {
           <Link to="/hotels">
             <Button 
               size="lg" 
-              className="bg-[#A8D03D] hover:bg-[#96BD35] text-white px-8 py-4 text-lg font-semibold rounded-full"
+              className="bg-[#A8D03D] hover:bg-[#96BD35] text-white px-8 py-4 text-base font-semibold rounded-full"
             >
               Find Discounted Hotels
             </Button>

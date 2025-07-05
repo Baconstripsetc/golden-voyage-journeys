@@ -77,7 +77,7 @@ const VideoCarousel = () => {
     <section className="py-8 sm:py-12 lg:py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
             Travel Moments
           </h2>
         </div>

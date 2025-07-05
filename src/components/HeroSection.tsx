@@ -32,7 +32,7 @@ const HeroSection = () => {
     <section className="relative py-8 sm:py-12 lg:py-16 bg-white">
       <div className="relative z-10 container mx-auto px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-6 fade-in">
-          <h1 className="text-2xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-xl font-bold text-gray-900 leading-tight">
             Discover Hidden Corners of the <span className="text-[#A8D03D]">World</span>,<br />
             Travel That <span className="text-[#A8D03D]">Feels Just Right</span>
           </h1>
