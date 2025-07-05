@@ -8,6 +8,10 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import UpcomingTrips from "./pages/UpcomingTrips";
+import HiddenGems from "./pages/HiddenGems";
+import Flights from "./pages/Flights";
+import Hotels from "./pages/Hotels";
 import NotFound from "./pages/NotFound";
 import PackageDetails from "./pages/PackageDetails";
 import AdminLogin from "./pages/AdminLogin";
@@ -29,8 +33,11 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/discover" element={<Index />} />
-            <Route path="/upcoming-trips" element={<Index />} />
+            <Route path="/upcoming-trips" element={<UpcomingTrips />} />
+            <Route path="/hidden-gems" element={<HiddenGems />} />
+            <Route path="/flights" element={<Flights />} />
+            <Route path="/hotels" element={<Hotels />} />
+            <Route path="/discover" element={<HiddenGems />} />
             <Route path="/package/:id" element={<PackageDetails />} />
             <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />

@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -27,18 +28,8 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, [brandLogos.length]);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  };
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
+    <section className="relative py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-slate-100 to-slate-200">
       {/* Background image overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
@@ -48,45 +39,35 @@ const HeroSection = () => {
       />
       
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 fade-in">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 leading-tight">
-            Discover Hidden Corners<br />
-            of the <span className="text-[#A8D03D]">World</span>,<br />
+        <div className="max-w-4xl mx-auto space-y-6 fade-in">
+          <h1 className="text-2xl font-bold text-gray-900 leading-tight">
+            Discover Hidden Corners of the <span className="text-[#A8D03D]">World</span>,<br />
             Travel That <span className="text-[#A8D03D]">Feels Just Right</span>
           </h1>
           
-          <div className="space-y-4">
-            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800">
-              Luxury you can afford. Peace of mind you've earned.
-            </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 px-4">
+            <Link to="/upcoming-trips">
+              <Button 
+                size="lg" 
+                className="bg-[#A8D03D] hover:bg-[#96BD35] text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto"
+              >
+                Upcoming Trips
+                <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+              </Button>
+            </Link>
             
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-              Thoughtfully crafted journeys, guided by real people who understand what makes a trip meaningful. 
-              Designed for travelers who know what they like, and are ready to see more.
-            </p>
+            <Link to="/hidden-gems">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="border-2 border-[#A8D03D] text-[#A8D03D] hover:bg-[#A8D03D] hover:text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto"
+              >
+                Hidden Gems
+              </Button>
+            </Link>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 md:pt-6 px-4">
-            <Button 
-              size="lg" 
-              className="bg-[#A8D03D] hover:bg-[#96BD35] text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto"
-              onClick={() => scrollToSection('discover-section')}
-            >
-              Discover Your Next Adventure
-              <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="border-2 border-[#A8D03D] text-[#A8D03D] hover:bg-[#A8D03D] hover:text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto"
-              onClick={() => scrollToSection('upcoming-trips-section')}
-            >
-              View Upcoming Trips
-            </Button>
-          </div>
-          
-          <div className="pt-8 md:pt-12">
+          <div className="pt-8">
             <p className="text-xs sm:text-sm text-gray-500 mb-6">Trusted by premium brands worldwide</p>
             
             {/* Brand logos carousel */}
