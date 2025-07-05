@@ -29,15 +29,7 @@ const HeroSection = () => {
   }, [brandLogos.length]);
 
   return (
-    <section className="relative py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-slate-100 to-slate-200">
-      {/* Background image overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')`
-        }}
-      />
-      
+    <section className="relative py-8 sm:py-12 lg:py-16 bg-white">
       <div className="relative z-10 container mx-auto px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-6 fade-in">
           <h1 className="text-2xl font-bold text-gray-900 leading-tight">
