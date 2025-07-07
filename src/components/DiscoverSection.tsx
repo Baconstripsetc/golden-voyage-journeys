@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Star, MapPin } from 'lucide-react';
 import { useDiscoveryPackages, DiscoveryPackage } from '@/hooks/useDiscoveryPackages';
 import { Link } from 'react-router-dom';
+import TravelMomentsCarousel from './TravelMomentsCarousel';
 
 const DiscoverSection = () => {
   const { packages, loading } = useDiscoveryPackages();
@@ -70,8 +71,8 @@ const DiscoverSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayPackages.map((pkg) => (
-            <Link key={pkg.id} to={`/package/${pkg.id}`}>
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+            <Card key={pkg.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              <Link to={`/package/${pkg.id}`}>
                 <div className="aspect-video bg-gray-200 relative">
                   {pkg.images && pkg.images.length > 0 ? (
                     <img 
@@ -99,42 +100,51 @@ const DiscoverSection = () => {
                     <Badge className="bg-[#A8D03D] hover:bg-[#96BD35] text-white">Discovery</Badge>
                   </div>
                 </div>
+              </Link>
+              
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  {pkg.location && (
+                    <>
+                      <MapPin className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm text-gray-600">{pkg.location}</span>
+                    </>
+                  )}
+                </div>
                 
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    {pkg.location && (
-                      <>
-                        <MapPin className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm text-gray-600">{pkg.location}</span>
-                      </>
-                    )}
-                  </div>
-                  
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                <Link to={`/package/${pkg.id}`}>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-[#A8D03D] transition-colors">
                     {pkg.title}
                   </h3>
-                  
-                  <p className="text-gray-600 mb-4 line-clamp-2">
-                    {pkg.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium">{pkg.rating || 4.5}</span>
-                      <span className="text-sm text-gray-500">({pkg.review_count || 0})</span>
-                    </div>
-                    
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-[#A8D03D]">{pkg.price}</div>
-                      {pkg.duration && (
-                        <div className="text-sm text-gray-500">{pkg.duration}</div>
-                      )}
-                    </div>
+                </Link>
+                
+                <p className="text-gray-600 mb-4 line-clamp-2">
+                  {pkg.description}
+                </p>
+
+                {/* Travel Moments Video Carousel */}
+                {pkg.videos && pkg.videos.length > 0 && (
+                  <div className="mb-4">
+                    <TravelMomentsCarousel videos={pkg.videos} title={pkg.title} />
                   </div>
-                </CardContent>
-              </Card>
-            </Link>
+                )}
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-medium">{pkg.rating || 4.5}</span>
+                    <span className="text-sm text-gray-500">({pkg.review_count || 0})</span>
+                  </div>
+                  
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-[#A8D03D]">{pkg.price}</div>
+                    {pkg.duration && (
+                      <div className="text-sm text-gray-500">{pkg.duration}</div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
 
