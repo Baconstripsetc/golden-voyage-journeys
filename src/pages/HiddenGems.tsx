@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Star, MapPin } from 'lucide-react';
 import { useDiscoveryPackages, DiscoveryPackage } from '@/hooks/useDiscoveryPackages';
 import { Link } from 'react-router-dom';
-import TravelMomentsCarousel from '@/components/TravelMomentsCarousel';
 
 const HiddenGems = () => {
   const { packages, loading } = useDiscoveryPackages();
@@ -93,13 +92,6 @@ const HiddenGems = () => {
                       <p className="text-gray-600 mb-4 line-clamp-2">
                         {pkg.description}
                       </p>
-
-                      {/* Travel Moments Video Carousel */}
-                      {pkg.videos && pkg.videos.length > 0 && (
-                        <div className="mb-4">
-                          <TravelMomentsCarousel videos={pkg.videos} title={pkg.title} />
-                        </div>
-                      )}
                       
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1">

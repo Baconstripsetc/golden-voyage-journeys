@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Star, MapPin } from 'lucide-react';
 import { usePackages, TravelPackage } from '@/hooks/usePackages';
 import { Link } from 'react-router-dom';
-import TravelMomentsCarousel from './TravelMomentsCarousel';
 
 const UpcomingTripsSection = () => {
   const { packages, loading } = usePackages();
@@ -21,7 +20,7 @@ const UpcomingTripsSection = () => {
 
   if (loading) {
     return (
-      <section id="upcoming-trips-section" className="py-16 bg-gray-50">
+      <section id="trips-section" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -31,7 +30,7 @@ const UpcomingTripsSection = () => {
               Discover amazing destinations and create unforgettable memories with our curated travel experiences
             </p>
           </div>
-          <div className="text-center">Loading packages...</div>
+          <div className="text-center">Loading trips...</div>
         </div>
       </section>
     );
@@ -39,7 +38,7 @@ const UpcomingTripsSection = () => {
 
   if (displayPackages.length === 0) {
     return (
-      <section id="upcoming-trips-section" className="py-16 bg-gray-50">
+      <section id="trips-section" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -50,7 +49,7 @@ const UpcomingTripsSection = () => {
             </p>
           </div>
           <div className="text-center text-gray-600">
-            No upcoming trips available at the moment. Check back soon!
+            No trips available at the moment. Check back soon!
           </div>
         </div>
       </section>
@@ -58,7 +57,7 @@ const UpcomingTripsSection = () => {
   }
 
   return (
-    <section id="upcoming-trips-section" className="py-16 bg-gray-50">
+    <section id="trips-section" className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -121,13 +120,6 @@ const UpcomingTripsSection = () => {
                 <p className="text-gray-600 mb-4 line-clamp-2">
                   {pkg.description}
                 </p>
-
-                {/* Travel Moments Video Carousel */}
-                {pkg.videos && pkg.videos.length > 0 && (
-                  <div className="mb-4">
-                    <TravelMomentsCarousel videos={pkg.videos} title={pkg.title} />
-                  </div>
-                )}
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1">
@@ -150,7 +142,7 @@ const UpcomingTripsSection = () => {
 
         <div className="text-center mt-12">
           <Link 
-            to="/upcoming-trips" 
+            to="/trips" 
             className="inline-block bg-[#A8D03D] hover:bg-[#96BD35] text-white px-8 py-3 rounded-lg font-semibold transition-colors"
           >
             View All Trips
