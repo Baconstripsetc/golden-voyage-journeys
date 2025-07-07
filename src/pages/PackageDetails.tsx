@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
@@ -121,11 +122,6 @@ const PackageDetails = () => {
               <ImageCarousel images={images} title={packageData.title} />
             )}
 
-            {/* Travel Moments Video Carousel */}
-            {videos.length > 0 && (
-              <TravelMomentsCarousel videos={videos} title={packageData.title} />
-            )}
-
             {/* Package Info */}
             <div className="space-y-4 sm:space-y-6">
               <div>
@@ -173,6 +169,11 @@ const PackageDetails = () => {
                   </p>
                 )}
               </div>
+
+              {/* Travel Moments Video Carousel - moved here after description */}
+              {videos.length > 0 && (
+                <TravelMomentsCarousel videos={videos} title={packageData.title} />
+              )}
 
               {/* Highlights */}
               {packageData.highlights && packageData.highlights.length > 0 && (

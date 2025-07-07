@@ -120,7 +120,7 @@ const TravelMomentsCarousel: React.FC<TravelMomentsCarouselProps> = ({ videos, t
           
           <Card className="overflow-hidden relative group">
             <div 
-              className="aspect-video bg-gray-900 relative"
+              className="aspect-[9/16] bg-gray-900 relative max-w-md mx-auto"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
