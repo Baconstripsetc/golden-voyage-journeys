@@ -15,6 +15,14 @@ export interface DiscoveryPackage {
   review_count?: number;
   status: 'draft' | 'published';
   images?: string[];
+  videos?: Array<{
+    id: string;
+    type: 'upload' | 'url';
+    url: string;
+    title?: string;
+    description?: string;
+    order: number;
+  }>;
   highlights?: string[];
   itinerary?: Array<{
     day: string;
@@ -31,6 +39,28 @@ export const useDiscoveryPackages = () => {
   const [packages, setPackages] = useState<DiscoveryPackage[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  const transformPackage = (pkg: any): DiscoveryPackage => ({
+    ...pkg,
+    status: pkg.status as 'draft' | 'published',
+    images: Array.isArray(pkg.images) ? pkg.images as string[] : [],
+    videos: Array.isArray(pkg.videos) ? pkg.videos as Array<{
+      id: string;
+      type: 'upload' | 'url';
+      url: string;
+      title?: string;
+      description?: string;
+      order: number;
+    }> : [],
+    highlights: Array.isArray(pkg.highlights) ? pkg.highlights as string[] : [],
+    inclusions: Array.isArray(pkg.inclusions) ? pkg.inclusions as string[] : [],
+    exclusions: Array.isArray(pkg.exclusions) ? pkg.exclusions as string[] : [],
+    itinerary: Array.isArray(pkg.itinerary) ? pkg.itinerary as Array<{
+      day: string;
+      activity: string;
+      accommodation: string;
+    }> : [],
+  });
 
   const fetchPackages = async () => {
     try {
@@ -50,20 +80,7 @@ export const useDiscoveryPackages = () => {
         return;
       }
 
-      const transformedPackages: DiscoveryPackage[] = (data || []).map(pkg => ({
-        ...pkg,
-        status: pkg.status as 'draft' | 'published',
-        images: Array.isArray(pkg.images) ? pkg.images as string[] : [],
-        highlights: Array.isArray(pkg.highlights) ? pkg.highlights as string[] : [],
-        inclusions: Array.isArray(pkg.inclusions) ? pkg.inclusions as string[] : [],
-        exclusions: Array.isArray(pkg.exclusions) ? pkg.exclusions as string[] : [],
-        itinerary: Array.isArray(pkg.itinerary) ? pkg.itinerary as Array<{
-          day: string;
-          activity: string;
-          accommodation: string;
-        }> : [],
-      }));
-
+      const transformedPackages: DiscoveryPackage[] = (data || []).map(transformPackage);
       setPackages(transformedPackages);
     } catch (err) {
       console.error('Error:', err);
@@ -90,19 +107,7 @@ export const useDiscoveryPackages = () => {
         return null;
       }
 
-      return {
-        ...data,
-        status: data.status as 'draft' | 'published',
-        images: Array.isArray(data.images) ? data.images as string[] : [],
-        highlights: Array.isArray(data.highlights) ? data.highlights as string[] : [],
-        inclusions: Array.isArray(data.inclusions) ? data.inclusions as string[] : [],
-        exclusions: Array.isArray(data.exclusions) ? data.exclusions as string[] : [],
-        itinerary: Array.isArray(data.itinerary) ? data.itinerary as Array<{
-          day: string;
-          activity: string;
-          accommodation: string;
-        }> : [],
-      };
+      return transformPackage(data);
     } catch (err) {
       console.error('Error:', err);
       return null;
@@ -155,19 +160,7 @@ export const useDiscoveryPackages = () => {
       });
 
       await fetchPackages();
-      return {
-        ...data,
-        status: data.status as 'draft' | 'published',
-        images: Array.isArray(data.images) ? data.images as string[] : [],
-        highlights: Array.isArray(data.highlights) ? data.highlights as string[] : [],
-        inclusions: Array.isArray(data.inclusions) ? data.inclusions as string[] : [],
-        exclusions: Array.isArray(data.exclusions) ? data.exclusions as string[] : [],
-        itinerary: Array.isArray(data.itinerary) ? data.itinerary as Array<{
-          day: string;
-          activity: string;
-          accommodation: string;
-        }> : [],
-      };
+      return transformPackage(data);
     } catch (err) {
       console.error('Error:', err);
       toast({
@@ -204,19 +197,7 @@ export const useDiscoveryPackages = () => {
       });
 
       await fetchPackages();
-      return {
-        ...data,
-        status: data.status as 'draft' | 'published',
-        images: Array.isArray(data.images) ? data.images as string[] : [],
-        highlights: Array.isArray(data.highlights) ? data.highlights as string[] : [],
-        inclusions: Array.isArray(data.inclusions) ? data.inclusions as string[] : [],
-        exclusions: Array.isArray(data.exclusions) ? data.exclusions as string[] : [],
-        itinerary: Array.isArray(data.itinerary) ? data.itinerary as Array<{
-          day: string;
-          activity: string;
-          accommodation: string;
-        }> : [],
-      };
+      return transformPackage(data);
     } catch (err) {
       console.error('Error:', err);
       toast({

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +9,7 @@ import { useDiscoveryPackages, DiscoveryPackage } from '@/hooks/useDiscoveryPack
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ImageCarousel from '@/components/ImageCarousel';
+import TravelMomentsCarousel from '@/components/TravelMomentsCarousel';
 
 const PackageDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -100,6 +100,7 @@ const PackageDetails = () => {
   }
 
   const images = packageData.images || [];
+  const videos = packageData.videos || [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -115,9 +116,14 @@ const PackageDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6 sm:space-y-8">
-            {/* Image Gallery */}
+            {/* Image gallery */}
             {images.length > 0 && (
               <ImageCarousel images={images} title={packageData.title} />
+            )}
+
+            {/* Travel Moments Video Carousel */}
+            {videos.length > 0 && (
+              <TravelMomentsCarousel videos={videos} title={packageData.title} />
             )}
 
             {/* Package Info */}

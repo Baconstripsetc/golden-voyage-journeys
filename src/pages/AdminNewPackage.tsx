@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminSidebar from '../components/AdminSidebar';
 import ImageUpload from '../components/ImageUpload';
+import VideoManagement from '../components/VideoManagement';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,6 +34,14 @@ const AdminNewPackage = () => {
     location: '',
     description: '',
     images: [] as string[],
+    videos: [] as Array<{
+      id: string;
+      type: 'upload' | 'url';
+      url: string;
+      title?: string;
+      description?: string;
+      order: number;
+    }>,
     highlights: [''],
     itinerary: [{ day: '', activity: '', accommodation: '' }],
     inclusions: [''],
@@ -71,6 +79,7 @@ const AdminNewPackage = () => {
           location: pkg.location || '',
           description: pkg.description || '',
           images: pkg.images || [],
+          videos: pkg.videos || [],
           highlights: pkg.highlights && pkg.highlights.length > 0 ? pkg.highlights : [''],
           itinerary: pkg.itinerary && pkg.itinerary.length > 0 ? pkg.itinerary : [{ day: '', activity: '', accommodation: '' }],
           inclusions: pkg.inclusions && pkg.inclusions.length > 0 ? pkg.inclusions : [''],
@@ -194,7 +203,7 @@ const AdminNewPackage = () => {
       <AdminSidebar />
       
       <div className="flex-1 overflow-auto">
-        <div className="p-8">
+        <div className="p-4 sm:p-8">
           <div className="flex justify-between items-center mb-8">
             <div>
               <div className="flex items-center text-sm text-gray-500 mb-2">
@@ -223,7 +232,7 @@ const AdminNewPackage = () => {
             </div>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Image Upload */}
             <ImageUpload
               images={formData.images}
@@ -231,6 +240,15 @@ const AdminNewPackage = () => {
               maxImages={4}
               title="Package Images"
               description="Upload 1-4 images for the package header"
+            />
+
+            {/* Video Management */}
+            <VideoManagement
+              videos={formData.videos}
+              onVideosChange={(videos) => setFormData(prev => ({ ...prev, videos }))}
+              maxVideos={6}
+              title="Travel Moments Videos"
+              description="Upload up to 6 videos or add video URLs for the travel moments carousel"
             />
 
             {/* Basic Information */}
