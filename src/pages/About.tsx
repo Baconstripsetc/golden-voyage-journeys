@@ -1,52 +1,31 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Award, Globe, Heart, Shield } from "lucide-react";
-
 const About = () => {
-  const values = [
-    {
-      icon: <Globe className="w-8 h-8 text-[#A6CE38]" />,
-      title: "Global Expertise",
-      description: "75 years of crafting exceptional travel experiences across all seven continents"
-    },
-    {
-      icon: <Heart className="w-8 h-8 text-[#A6CE38]" />,
-      title: "Personal Touch", 
-      description: "Every journey is personally curated by our expert travel concierges"
-    },
-    {
-      icon: <Shield className="w-8 h-8 text-[#A6CE38]" />,
-      title: "Trust & Safety",
-      description: "Your peace of mind is our priority with 24/7 support and comprehensive travel insurance"
-    },
-    {
-      icon: <Award className="w-8 h-8 text-[#A6CE38]" />,
-      title: "Excellence",
-      description: "Award-winning service recognized by leading travel publications worldwide"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen">
+  const values = [{
+    icon: <Globe className="w-8 h-8 text-[#A6CE38]" />,
+    title: "Global Expertise",
+    description: "75 years of crafting exceptional travel experiences across all seven continents"
+  }, {
+    icon: <Heart className="w-8 h-8 text-[#A6CE38]" />,
+    title: "Personal Touch",
+    description: "Every journey is personally curated by our expert travel concierges"
+  }, {
+    icon: <Shield className="w-8 h-8 text-[#A6CE38]" />,
+    title: "Trust & Safety",
+    description: "Your peace of mind is our priority with 24/7 support and comprehensive travel insurance"
+  }, {
+    icon: <Award className="w-8 h-8 text-[#A6CE38]" />,
+    title: "Excellence",
+    description: "Award-winning service recognized by leading travel publications worldwide"
+  }];
+  return <div className="min-h-screen">
       <Header />
       
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              About <span className="text-[#A6CE38]">LuxureAdventures</span>
-            </h1>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              Since 1950, we've been pioneers in luxury travel, creating extraordinary experiences 
-              for discerning adventurers who appreciate the perfect blend of comfort, culture, and discovery.
-            </p>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Story Section */}
       <section className="py-20 bg-white">
@@ -74,11 +53,7 @@ const About = () => {
               </div>
             </div>
             <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="Luxury travel experience"
-                className="rounded-2xl shadow-2xl"
-              />
+              <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Luxury travel experience" className="rounded-2xl shadow-2xl" />
             </div>
           </div>
         </div>
@@ -95,15 +70,13 @@ const About = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
+            {values.map((value, index) => <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
                 <CardContent className="space-y-4">
                   <div className="flex justify-center">{value.icon}</div>
                   <h3 className="text-xl font-bold text-gray-900">{value.title}</h3>
                   <p className="text-gray-600">{value.description}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -119,41 +92,31 @@ const About = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Sophie Laurent",
-                title: "Senior Travel Concierge",
-                image: "https://images.unsplash.com/photo-1494790108755-2616c0763093?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-                experience: "25 years experience in luxury travel"
-              },
-              {
-                name: "James Mitchell",
-                title: "Adventure Specialist",
-                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-                experience: "Expert in unique cultural experiences"
-              },
-              {
-                name: "Maria Rodriguez",
-                title: "Wellness Travel Expert",
-                image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-                experience: "Specialist in transformative journeys"
-              }
-            ].map((member, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
+            {[{
+            name: "Sophie Laurent",
+            title: "Senior Travel Concierge",
+            image: "https://images.unsplash.com/photo-1494790108755-2616c0763093?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            experience: "25 years experience in luxury travel"
+          }, {
+            name: "James Mitchell",
+            title: "Adventure Specialist",
+            image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            experience: "Expert in unique cultural experiences"
+          }, {
+            name: "Maria Rodriguez",
+            title: "Wellness Travel Expert",
+            image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            experience: "Specialist in transformative journeys"
+          }].map((member, index) => <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="h-64 overflow-hidden">
-                  <img 
-                    src={member.image} 
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
                 </div>
                 <CardContent className="p-6 text-center">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
                   <p className="text-[#A6CE38] font-semibold mb-2">{member.title}</p>
                   <p className="text-gray-600 text-sm">{member.experience}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -167,18 +130,13 @@ const About = () => {
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
             Let our expert concierges craft a personalized journey that exceeds your expectations
           </p>
-          <Button 
-            size="lg" 
-            className="bg-white text-[#A6CE38] hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full"
-          >
+          <Button size="lg" className="bg-white text-[#A6CE38] hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full">
             Start Planning Today
           </Button>
         </div>
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default About;
