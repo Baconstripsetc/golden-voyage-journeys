@@ -8,7 +8,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleWhatsAppContact = () => {
-    window.open('https://wa.me/1234567890', '_blank');
+    window.open('https://wa.me/27646516306', '_blank');
   };
 
   return (
@@ -19,7 +19,7 @@ const Header = () => {
           <div className="flex items-center space-x-2 md:space-x-4">
             <div className="flex items-center space-x-1 md:space-x-2">
               <Phone size={12} className="md:w-3.5 md:h-3.5" />
-              <span className="text-xs md:text-sm">+1 (555) 123-4567</span>
+              <span className="text-xs md:text-sm">+27 646516306</span>
             </div>
             <div className="hidden sm:flex items-center space-x-2">
               <Mail size={14} />

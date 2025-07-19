@@ -142,7 +142,7 @@ const UpcomingTripsSection = () => {
 
         <div className="text-center mt-12">
           <Link 
-            to="/trips" 
+            to="/upcoming-trips" 
             className="inline-block bg-[#A8D03D] hover:bg-[#96BD35] text-white px-8 py-3 rounded-lg font-semibold transition-colors"
           >
             View All Trips
