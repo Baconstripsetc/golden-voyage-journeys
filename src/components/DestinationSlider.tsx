@@ -4,39 +4,39 @@ import { useState, useEffect } from 'react';
 const destinations = [
   {
     id: 1,
-    name: "Santorini, Greece",
-    image: "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-    description: "Whitewashed villages and stunning sunsets"
+    name: "Mauritius",
+    image: "/lovable-uploads/893aafb9-5ed5-4a49-9c86-1ea0b0878676.png",
+    description: "Tropical paradise with pristine beaches"
   },
   {
     id: 2,
-    name: "Bali, Indonesia",
-    image: "https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-    description: "Tropical paradise with rich culture"
+    name: "Spain",
+    image: "/lovable-uploads/df4ee840-a660-44b5-835d-7e4f5e4af604.png",
+    description: "Mediterranean coastline and vibrant culture"
   },
   {
     id: 3,
-    name: "Machu Picchu, Peru",
-    image: "https://images.unsplash.com/photo-1587595431973-160d0d94add1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-    description: "Ancient wonder in the clouds"
+    name: "Cape Town",
+    image: "/lovable-uploads/df66bfc8-5b2d-4dbb-8cf8-14b55c2507f9.png",
+    description: "Wildlife encounters and stunning landscapes"
   },
   {
     id: 4,
-    name: "Swiss Alps, Switzerland",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-    description: "Majestic peaks and pristine lakes"
+    name: "Bali",
+    image: "/lovable-uploads/089175c6-7887-4826-9e5f-25f4641a93c6.png",
+    description: "Ancient temples and spiritual experiences"
   },
   {
     id: 5,
-    name: "Maldives",
-    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-    description: "Crystal clear waters and luxury"
+    name: "Dubai",
+    image: "/lovable-uploads/bb007a5d-4c61-4420-9f93-b4782a574bbb.png",
+    description: "Modern skyline and luxury experiences"
   },
   {
     id: 6,
-    name: "Tokyo, Japan",
-    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-    description: "Modern metropolis meets tradition"
+    name: "Hong Kong",
+    image: "/lovable-uploads/4a8ec1c8-a4dd-4c80-92ab-15c40ee15f30.png",
+    description: "Harbor views and traditional culture"
   }
 ];
 
