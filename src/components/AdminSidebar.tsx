@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Settings, Package, Plus, LogOut, Compass } from 'lucide-react';
+import { Settings, Package, Plus, LogOut, Compass, FileVideo } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/hooks/useAuth';
 
@@ -40,6 +40,15 @@ const AdminSidebar = () => {
       icon: Plus,
       path: '/admin/new-discovery',
       active: location.pathname === '/admin/new-discovery' || location.pathname.includes('/admin/edit-discovery')
+    }
+  ];
+
+  const mediaMenuItems = [
+    {
+      title: 'Travel Moment Videos',
+      icon: FileVideo,
+      path: '/admin/travel-moments',
+      active: location.pathname === '/admin/travel-moments'
     }
   ];
 
@@ -91,6 +100,31 @@ const AdminSidebar = () => {
           </h3>
           <nav className="space-y-1">
             {discoveryMenuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    item.active
+                      ? 'bg-gray-100 text-gray-900'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 mr-3" />
+                  {item.title}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="px-4 mb-6">
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+            Media Management
+          </h3>
+          <nav className="space-y-1">
+            {mediaMenuItems.map((item) => {
               const Icon = item.icon;
               return (
                 <Link
