@@ -1,27 +1,23 @@
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import DestinationSlider from "@/components/DestinationSlider";
-import HeroSection from "@/components/HeroSection";
-import UpcomingTripsSection from "@/components/UpcomingTripsSection";
-import VideoCarousel from "@/components/VideoCarousel";
-import BenefitsSection from "@/components/BenefitsSection";
-import DiscoverSection from "@/components/DiscoverSection";
-import FlightsSection from "@/components/FlightsSection";
-import HotelsSection from "@/components/HotelsSection";
+import HeroSection from '@/components/HeroSection';
+import DestinationSlider from '@/components/DestinationSlider';
+import UpcomingTripsSection from '@/components/UpcomingTripsSection';
+import DiscoverSection from '@/components/DiscoverSection';
+import BenefitsSection from '@/components/BenefitsSection';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import TravelMomentsSection from '@/components/TravelMomentsSection';
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      <DestinationSlider />
       <HeroSection />
+      <DestinationSlider />
       <UpcomingTripsSection />
-      <VideoCarousel />
-      <BenefitsSection />
+      <TravelMomentsSection />
       <DiscoverSection />
-      <FlightsSection />
-      <HotelsSection />
+      <BenefitsSection />
       <Footer />
     </div>
   );

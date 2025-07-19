@@ -1,63 +1,51 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminSidebar from '../components/AdminSidebar';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Upload, X, Play, FileVideo, Edit2, Trash2 } from 'lucide-react';
+import { Upload, Play, FileVideo, Edit2, Trash2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useToast } from '@/components/ui/use-toast';
-
-interface TravelMomentVideo {
-  id: string;
-  name: string;
-  url: string;
-  file_size: number;
-  created_at: string;
-}
+import { useTravelMomentVideos } from '@/hooks/useTravelMomentVideos';
 
 const AdminTravelMoments = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { uploadImage: uploadVideo, uploading } = useImageUpload();
   const { toast } = useToast();
+  const { videos, addVideo, updateVideo, deleteVideo } = useTravelMomentVideos();
   
-  const [videos, setVideos] = useState<TravelMomentVideo[]>([]);
-  const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
+  const maxVideos = 7;
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/admin');
       return;
     }
-    // Load existing videos from localStorage for demo purposes
-    loadVideos();
   }, [isAuthenticated, navigate]);
-
-  const loadVideos = () => {
-    const savedVideos = localStorage.getItem('travelMomentVideos');
-    if (savedVideos) {
-      setVideos(JSON.parse(savedVideos));
-    }
-  };
-
-  const saveVideos = (updatedVideos: TravelMomentVideo[]) => {
-    localStorage.setItem('travelMomentVideos', JSON.stringify(updatedVideos));
-    setVideos(updatedVideos);
-  };
 
   const handleFileUpload = async (files: FileList | null) => {
     if (!files) return;
 
     const fileArray = Array.from(files);
     const maxSize = 60 * 1024 * 1024; // 60MB in bytes
+    const remainingSlots = maxVideos - videos.length;
 
-    for (const file of fileArray) {
+    if (remainingSlots <= 0) {
+      toast({
+        title: "Upload Limit Reached",
+        description: `Maximum of ${maxVideos} videos allowed`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const filesToUpload = fileArray.slice(0, remainingSlots);
+
+    for (const file of filesToUpload) {
       if (!file.type.startsWith('video/')) {
         toast({
           title: "Invalid File",
@@ -82,16 +70,15 @@ const AdminTravelMoments = () => {
         const url = await uploadVideo(file, 'travel-moments');
         
         if (url) {
-          const newVideo: TravelMomentVideo = {
+          const newVideo = {
             id: Date.now().toString() + Math.random(),
-            name: file.name.replace(/\.[^/.]+$/, ""), // Remove file extension
+            name: file.name.replace(/\.[^/.]+$/, ""),
             url,
             file_size: file.size,
             created_at: new Date().toISOString()
           };
 
-          const updatedVideos = [...videos, newVideo];
-          saveVideos(updatedVideos);
+          addVideo(newVideo);
 
           toast({
             title: "Success",
@@ -116,16 +103,16 @@ const AdminTravelMoments = () => {
   };
 
   const handleVideoNameUpdate = (id: string, newName: string) => {
-    const updatedVideos = videos.map(video => 
-      video.id === id ? { ...video, name: newName } : video
-    );
-    saveVideos(updatedVideos);
+    updateVideo(id, { name: newName });
+    toast({
+      title: "Success",
+      description: "Video name updated successfully",
+    });
   };
 
   const handleVideoDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this video?')) {
-      const updatedVideos = videos.filter(video => video.id !== id);
-      saveVideos(updatedVideos);
+      deleteVideo(id);
       toast({
         title: "Success",
         description: "Video deleted successfully",
@@ -162,7 +149,9 @@ const AdminTravelMoments = () => {
                 <span>Travel Moment Videos</span>
               </div>
               <h1 className="text-2xl font-bold text-gray-900">Travel Moment Videos</h1>
-              <p className="text-gray-600 mt-1">Upload and manage videos for travel moments carousel (Max 60MB per video)</p>
+              <p className="text-gray-600 mt-1">
+                Upload and manage videos for travel moments carousel (Max 7 videos, 60MB each)
+              </p>
             </div>
           </div>
 
@@ -172,17 +161,17 @@ const AdminTravelMoments = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Upload className="w-5 h-5" />
-                  Upload New Videos
+                  Upload New Videos ({videos.length}/{maxVideos})
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                   <FileVideo className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <p className="text-lg font-medium text-gray-900 mb-2">
-                    {uploading ? 'Uploading videos...' : 'Drop video files here or click to browse'}
+                    {uploading ? 'Uploading videos...' : videos.length >= maxVideos ? 'Maximum videos reached' : 'Drop video files here or click to browse'}
                   </p>
                   <p className="text-sm text-gray-500 mb-6">
-                    Supports MP4, MOV, AVI, WebM • Maximum 60MB per file
+                    Supports MP4, MOV, AVI, WebM • Maximum 60MB per file • {videos.length}/{maxVideos} videos
                   </p>
                   <input
                     type="file"
@@ -191,19 +180,18 @@ const AdminTravelMoments = () => {
                     onChange={(e) => handleFileUpload(e.target.files)}
                     className="hidden"
                     id="video-upload"
-                    disabled={uploading}
+                    disabled={uploading || videos.length >= maxVideos}
                   />
                   <Button 
                     onClick={() => document.getElementById('video-upload')?.click()}
-                    disabled={uploading}
+                    disabled={uploading || videos.length >= maxVideos}
                     className="bg-blue-600 hover:bg-blue-700"
                   >
                     <Upload className="w-4 h-4 mr-2" />
-                    {uploading ? 'Uploading...' : 'Choose Video Files'}
+                    {uploading ? 'Uploading...' : videos.length >= maxVideos ? 'Limit Reached' : 'Choose Video Files'}
                   </Button>
                 </div>
 
-                {/* Upload Progress */}
                 {Object.keys(uploadProgress).length > 0 && (
                   <div className="mt-4 space-y-2">
                     {Object.entries(uploadProgress).map(([fileName, progress]) => (
@@ -231,7 +219,7 @@ const AdminTravelMoments = () => {
                 <CardTitle className="flex items-center justify-between">
                   <span className="flex items-center gap-2">
                     <FileVideo className="w-5 h-5" />
-                    Uploaded Videos ({videos.length})
+                    Travel Moment Videos ({videos.length})
                   </span>
                 </CardTitle>
               </CardHeader>
@@ -240,7 +228,7 @@ const AdminTravelMoments = () => {
                   <div className="text-center py-8">
                     <FileVideo className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                     <p className="text-gray-500">No videos uploaded yet</p>
-                    <p className="text-sm text-gray-400 mt-1">Upload some videos to get started</p>
+                    <p className="text-sm text-gray-400 mt-1">Upload videos to display in travel moments carousel</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -264,7 +252,13 @@ const AdminTravelMoments = () => {
 };
 
 interface VideoCardProps {
-  video: TravelMomentVideo;
+  video: {
+    id: string;
+    name: string;
+    url: string;
+    file_size: number;
+    created_at: string;
+  };
   onNameUpdate: (id: string, name: string) => void;
   onDelete: (id: string) => void;
 }
